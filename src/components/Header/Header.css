@@ -214,14 +214,6 @@
 .menu-hours dt { color: var(--bone-dim); }
 .menu-hours dd { margin: 0; }
 
-.menu-theme { display: flex; align-items: center; gap: 18px; }
-.menu-theme-label { color: var(--bone-mute); font: 600 11px/1 var(--body); letter-spacing: 0.24em; text-transform: uppercase; }
-
-/* En escritorio el selector ya está en la barra. */
-@media (min-width: 768px) {
-  .menu-theme { display: none; }
-}
-
 @media (max-width: 899px) {
   .menu-panel { grid-template-columns: 1fr; align-items: start; overflow-y: auto; padding-top: 110px; }
   .menu-aside { padding-bottom: 32px; }
@@ -233,7 +225,6 @@
 
 @media (max-width: 767px) {
   /* Menú a la izquierda, logo centrado, "Réserver" a la derecha; NUIT | JOUR pasa al menú. */
-  .topbar-left .theme-toggle--bar { display: none; }  /* gana a ThemeToggle.css, que carga después */
   .topbar-menu { min-width: 44px; }
   .topbar-right { display: contents; }
   .topbar-logo { grid-area: 1 / 2; }

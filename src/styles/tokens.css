@@ -2,14 +2,13 @@
   Tokens de La Familia. Paleta de la marca (brand-spec.md del export: primary-100…500) reducida a
   lo que pide el cliente: rojo oscuro y rojo claro, sin dorado ni degradados de colores.
 
-  Dos temas: oscuro (por defecto) y claro, en <html data-theme>. Los nombres de los neutros se
-  mantienen (--ink = fondo, --bone = texto) y cambian de valor con el tema. Las "islas" que son
-  oscuras siempre (portada, bloque rojo, cierre, menú, fotos con texto encima) llevan la clase
-  .theme-dark, que vuelve a declarar los valores oscuros para todo lo que tienen dentro.
+  Un solo tema, oscuro (sin selector): --ink = fondo, --bone = texto. Las "islas" (portada, bloque
+  rojo, cierre, menú, fotos con texto encima) llevan la clase .theme-dark, que vuelve a declarar
+  los valores oscuros para todo lo que tienen dentro.
 */
 :root {
   /* Constantes: no cambian con el tema */
-  --paper: #f2ebe7;      /* texto sobre rojo o sobre foto, en los dos temas */
+  --paper: #f2ebe7;      /* texto sobre rojo o sobre foto */
   --night: #0c0909;
   --blood: #3d0303;      /* rojo oscuro: fondos */
   --wine: #980000;       /* primary-400 */
@@ -49,33 +48,6 @@
   --field-line: rgb(242 235 231 / 0.42);  /* borde de campos de formulario (≥ 3:1) */
   --grain: 0.06;
 }
-
-/* Tema claro: papel cálido (no blanco puro) y tinta casi negra con el mismo punto de rojo.
-   .theme-page = vuelve al tema de la página dentro de una isla oscura. */
-:root[data-theme='light'],
-:root[data-theme='light'] .theme-page {
-  color-scheme: light;
-  --ink: #f4eeea;
-  --ink-2: #ece3de;
-  --ink-3: #e1d5ce;
-  --bone: #1b1111;
-  --bone-dim: rgb(27 17 17 / 0.76);
-  --bone-mute: rgb(27 17 17 / 0.64);
-  --line: rgb(27 17 17 / 0.13);
-  --line-strong: rgb(27 17 17 / 0.3);
-  --red-light: #b80000;  /* el rojo claro no se lee sobre papel: rojo vino */
-  --alert: #8a0000;
-  --bar: rgb(244 238 234 / 0.9);
-  --tint: rgb(224 0 0 / 0.07);
-  --field-line: rgb(27 17 17 / 0.56);
-  --grain: 0.045;
-}
-
-/* C18: al cambiar de tema se cortan las transiciones de color, para que el círculo del
-   View Transition muestre ya el tema nuevo (no elementos a medio fundido). */
-.theme-switching *,
-.theme-switching *::before,
-.theme-switching *::after { transition: none !important; }
 
 /* `color` se hereda ya calculado: cada isla tiene que volver a pedir el texto de su tema. */
 .theme-dark,

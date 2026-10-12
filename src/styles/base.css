@@ -153,13 +153,29 @@ button { font: inherit; color: inherit; }
 .btn--red { background: var(--red-ink); color: var(--paper); }
 .btn--red::before { background: var(--wine); }
 
+/* Destello que cruza los botones rojos cada pocos segundos (también en el celular). */
+.btn--red::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.28) 50%, transparent 65%);
+  transform: translateX(-120%);
+  animation: btn-shine 4.2s var(--ease-in-out) 1.5s infinite;
+  pointer-events: none;
+}
+
+@keyframes btn-shine {
+  0% { transform: translateX(-120%); }
+  28%, 100% { transform: translateX(120%); }
+}
+
 .btn--line { background: transparent; color: var(--bone); box-shadow: inset 0 0 0 1px var(--line-strong); }
 .btn--line::before { background: var(--red-ink); }
 .btn--line:hover:not([disabled]) { color: var(--paper); box-shadow: inset 0 0 0 1px var(--red-ink); }
 
 
 .btn[disabled] { opacity: 0.5; cursor: not-allowed; }
-:root[data-theme='light'] .btn--red[disabled] { opacity: 1; background: var(--ink-3); color: var(--bone-mute); }
 
 /* Enlace subrayado en rojo (como el "Записаться" de la referencia) */
 .underline-link {
@@ -250,18 +266,5 @@ button { font: inherit; color: inherit; }
   [data-reveal] img { scale: 1; }
   [data-reveal='wipe']::before { display: none; }
   .kicker[data-reveal]::before { transform: none; }
+  .btn--red::after { animation: none; display: none; }
 }
-
-/* ---------- Tema claro = impreso ----------
-   Un solo papel de fondo, fotos en blanco y negro (el color lo ponen los títulos en rojo vino),
-   grano quieto y el logo como tinta sobre el papel. Las islas rojas/oscuras no cambian. */
-:root[data-theme='light'] .services,
-:root[data-theme='light'] .gallery,
-:root[data-theme='light'] .faq { background: var(--ink); --wipe-bg: var(--ink); border-top-color: var(--line-strong); }
-:root[data-theme='light'] .manifesto-media img,
-:root[data-theme='light'] .services-photo img,
-:root[data-theme='light'] .tile img { filter: grayscale(1) contrast(1.12) brightness(0.96); }
-:root[data-theme='light'] .tile:hover img { filter: grayscale(0) contrast(1.04); }
-:root[data-theme='light'] body::after { animation: none; }
-:root[data-theme='light'] .footer-logo img,
-:root[data-theme='light'] .topbar-inner:not(.theme-dark) .topbar-logo img { filter: invert(1); mix-blend-mode: multiply; }

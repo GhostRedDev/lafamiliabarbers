@@ -13,6 +13,7 @@ import { Marquee } from './components/Marquee/Marquee';
 import { Services } from './components/Services/Services';
 import { Team } from './components/Team/Team';
 import { useBooking } from './hooks/useBooking';
+import { startFx } from './lib/fx';
 import { startMotion } from './lib/motion';
 
 /**
@@ -47,6 +48,7 @@ export function App() {
   const book = (svc?: number) => booking.openBooking(svc);
   useReveal();
   useEffect(() => startMotion(), []);
+  useEffect(() => startFx(), []);
 
   return (
     <>

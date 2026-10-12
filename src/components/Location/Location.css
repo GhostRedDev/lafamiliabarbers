@@ -71,8 +71,6 @@
   filter: grayscale(1) invert(0.9) contrast(0.95) brightness(0.9);
 }
 
-[data-theme='light'] .location-map iframe { filter: grayscale(1) sepia(0.15) contrast(1.02); }
-[data-theme='light'] .location-map::after { background: rgb(152 0 0 / 0.04); }
 
 .location-map::after {
   content: "";
