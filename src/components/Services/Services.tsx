@@ -73,30 +73,29 @@ export function Services({ onBook }: { onBook: (svc: number) => void }) {
                         onMouseEnter={() => setActive(r)}
                         onFocus={() => setActive(r)}
                       >
-                        <p className="menu-name">
-                          {s.name}
-                          {s.note && <small>{s.note}</small>}
-                        </p>
-                        <p className="menu-price">{priceLabel(s)}</p>
-                        <div className="menu-actions">
+                        <div className="menu-main">
+                          <p className="menu-name">{s.name}</p>
+                          {s.note && <p className="menu-note">({s.note})</p>}
+                          {/* La promo «+ barbe» como en el flyer; al tocarla se reserva ese combo. */}
                           {combo >= 0 && (
                             <button type="button" className="menu-combo" onClick={() => onBook(combo)}>
-                              + barbe {priceLabel(services[combo])}
+                              (+ barbe {priceLabel(services[combo])})
                               <span className="sr-only"> — réserver {services[combo].name}</span>
                             </button>
                           )}
-                          <button type="button" className="menu-book" onClick={() => onBook(i)}>
-                            Réserver<span className="sr-only"> — {s.name}</span>
-                            <Arrow />
-                          </button>
                         </div>
+                        <p className="menu-price">{priceLabel(s)}</p>
+                        <button type="button" className="menu-book" onClick={() => onBook(i)}>
+                          Réserver<span className="sr-only"> — {s.name}</span>
+                          <Arrow />
+                        </button>
                       </li>
                     );
                   })}
                 </ul>
               </section>
             ))}
-            <p className="menu-foot" data-reveal="">Prix en dollars canadiens. « Dès » : le prix final dépend de la longueur et du volume.</p>
+            <p className="menu-foot" data-reveal="">Prix en dollars canadiens. Réservez ton style. Rejoins la Familia.</p>
           </div>
 
           <figure className="services-photo" aria-hidden="true">
