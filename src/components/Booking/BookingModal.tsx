@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type CSSProperties } from 'react';
 import logo from '../../assets/logo-la-familia.png';
 import { STEP_COUNT, type BookingState } from '../../hooks/useBooking';
 import { categories, priceLabel, services } from '../../content/services';
@@ -101,7 +101,7 @@ export function BookingModal({ b }: { b: BookingState }) {
                 <p className="bk-group-title" id={`bk-${c.id}`}>{c.label}</p>
                 <ul className="bk-list">
                   {services.map((s, i) => s.category !== c.id ? null : (
-                    <li key={s.key}>
+                    <li key={s.key} style={{ '--i': i } as CSSProperties}>
                       <button type="button" className="bk-svc" aria-pressed={b.service === i} onClick={() => b.setService(i)}>
                         <span className="bk-svc-name">{s.name}</span>
                         <span className="bk-svc-meta">{priceLabel(s)}</span>

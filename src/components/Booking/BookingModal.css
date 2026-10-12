@@ -116,6 +116,18 @@
 .bk-list, .bk-barbers, .bk-days, .bk-times { list-style: none; margin: 0; padding: 0; }
 .bk-list { display: grid; gap: 8px; }
 .bk-group + .bk-group { margin-top: 22px; }
+
+/* Los servicios entran en cascada al abrir el paso. */
+.bk-list li { animation: bk-in 520ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 30ms); }
+
+@keyframes bk-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bk-list li { animation: none; }
+}
 .bk-group-title {
   margin: 0 0 10px;
   color: var(--bone-mute);

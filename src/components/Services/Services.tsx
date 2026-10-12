@@ -84,7 +84,7 @@ export function Services({ onBook }: { onBook: (svc: number) => void }) {
                             </button>
                           )}
                         </div>
-                        <p className="menu-price">{priceLabel(s)}</p>
+                        <p className="menu-price" data-count={s.price}>{priceLabel(s)}</p>
                         <button type="button" className="menu-book" onClick={() => onBook(i)}>
                           Réserver<span className="sr-only"> — {s.name}</span>
                           <Arrow />

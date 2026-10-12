@@ -36,7 +36,7 @@ export function BookBand({ onBook }: { onBook: (svc?: number) => void }) {
                 <li key={s.key}>
                   <button type="button" className="band-pick" onClick={() => onBook(i)}>
                     <span className="band-pick-name">{s.name}</span>
-                    <span className="band-pick-meta">{priceLabel(s)}</span>
+                    <span className="band-pick-meta" data-count={s.price}>{priceLabel(s)}</span>
                   </button>
                 </li>
               ))}
