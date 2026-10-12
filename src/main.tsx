@@ -17,7 +17,6 @@ import './components/Faq/Faq.css';
 import './components/FinalCta/FinalCta.css';
 import './components/Footer/Footer.css';
 import './components/Booking/BookingModal.css';
-import './components/ThemeToggle/ThemeToggle.css';
 import './components/Marquee/Marquee.css';
 import { App } from './App';
 

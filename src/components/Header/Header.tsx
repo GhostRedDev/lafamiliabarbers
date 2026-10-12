@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import logo from '../../assets/logo-la-familia.png';
 import { address, hours } from '../../content/site';
-import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
 
 const NAV = [
   { href: '#manifeste', label: 'Le salon' },
@@ -69,21 +68,6 @@ export function Header({ onBook }: { onBook: () => void }) {
     };
   }, [open]);
 
-  // Color de la barra del navegador = lo que hay arriba: portada o menú oscuros, o la barra clara
-  // al bajar en tema claro. Se observa data-theme porque el selector de tema vive en otro componente.
-  useEffect(() => {
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (!meta) return undefined;
-    const sync = () => {
-      const paper = scrolled && !open && document.documentElement.dataset.theme === 'light';
-      meta.setAttribute('content', paper ? '#f4eeea' : '#0c0909');
-    };
-    sync();
-    const mo = new MutationObserver(sync);
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-    return () => mo.disconnect();
-  }, [scrolled, open]);
-
   const go = () => setOpen(false);
 
   return (
@@ -102,7 +86,6 @@ export function Header({ onBook }: { onBook: () => void }) {
             <span className="topbar-menu-lines" aria-hidden="true" />
             <span>{open ? 'Fermer' : 'Menu'}</span>
           </button>
-          <ThemeToggle className="theme-toggle--bar" />
         </div>
 
         <a className="topbar-logo" href="#top" aria-label="La Familia — retour en haut" onClick={go}>
@@ -141,11 +124,6 @@ export function Header({ onBook }: { onBook: () => void }) {
               <div key={h.days}><dt>{h.days}</dt><dd>{h.time}</dd></div>
             ))}
           </dl>
-          {/* En móvil el selector de tema vive aquí (en la barra no cabe junto al logo). */}
-          <div className="menu-theme">
-            <span className="menu-theme-label">Ambiance</span>
-            <ThemeToggle tabIndex={open ? 0 : -1} />
-          </div>
           <button type="button" className="btn btn--red" tabIndex={open ? 0 : -1} onClick={() => { go(); onBook(); }}>
             Réserver un rendez-vous
           </button>

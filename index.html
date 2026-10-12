@@ -7,12 +7,9 @@
 <meta name="description" content="La Familia, salon de barbier à Laval : coupes précises, dégradés, rasage traditionnel. Réservez votre rendez-vous en ligne en quelques clics.">
 <meta name="theme-color" content="#0c0909">
 <script>
-  // Tema antes de pintar (sin parpadeo): la elección guardada o la del sistema.
+  // La página es siempre oscura (sin selector de tema).
   (function () {
-    var t = null;
-    try { t = localStorage.getItem('lafamilia-theme'); } catch (e) {}
-    if (t !== 'light' && t !== 'dark') t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', t);
+    document.documentElement.setAttribute('data-theme', 'dark');
     // Telón de entrada de la portada: una vez por sesión, sin movimiento reducido ni enlace a una sección.
     try {
       if (!sessionStorage.getItem('lafamilia-intro') && !location.hash &&
