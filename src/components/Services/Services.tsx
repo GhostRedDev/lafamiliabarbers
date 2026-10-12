@@ -1,10 +1,10 @@
 import { useState, type CSSProperties } from 'react';
-import cut from '../../assets/photos/cut-800.webp';
-import fade from '../../assets/photos/fade-800.webp';
-import tools from '../../assets/photos/tools-800.webp';
-import { priceLabel, services } from '../../content/services';
+import braids from '../../assets/photos/braids-top-800.webp';
+import design from '../../assets/photos/design-flames-800.webp';
+import towel from '../../assets/photos/hot-towel.webp';
+import { categories, comboOf, priceLabel, services, type CategoryId } from '../../content/services';
 
-const PHOTOS: Record<string, string> = { coupe: cut, degrade: fade, rituel: tools };
+const PHOTOS: Record<CategoryId, string> = { coupes: design, barbe: towel, tresses: braids };
 
 const Arrow = () => (
   <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -13,8 +13,8 @@ const Arrow = () => (
 );
 
 /**
- * Carta de precios editorial: una fila por servicio (número, nombre, descripción, duración,
- * precio y su "Réserver"). En escritorio la foto del servicio activo acompaña a la lista.
+ * Liste des prix: una tabla por categoría (nombre, precio, "Réserver" y, si existe, la variante
+ * "+ barbe" que reserva ese combo). En escritorio la foto de la categoría activa acompaña a la lista.
  */
 export function Services({ onBook }: { onBook: (svc: number) => void }) {
   const [active, setActive] = useState(0);
@@ -23,56 +23,74 @@ export function Services({ onBook }: { onBook: (svc: number) => void }) {
     <section className="services" id="services" aria-labelledby="services-title">
       <div className="wrap">
         <header className="services-head">
-          <p className="kicker" data-reveal="">Nos services</p>
+          <p className="kicker" data-reveal="">Liste des prix</p>
           <h2 className="title" id="services-title" data-reveal="">
             Votre style. <em>Votre choix.</em>
           </h2>
           <p className="lead" data-reveal="">
-            Trois expériences pensées pour révéler votre style, de la coupe classique au rituel complet.
+            Ce n’est pas qu’une coupe, c’est un style de vie. Choisissez votre service et réservez en ligne.
           </p>
         </header>
 
         <div className="services-body">
-          <ol className="menu">
-            {services.map((s, i) => (
-              <li
-                key={s.key}
-                className={`menu-row${active === i ? ' is-active' : ''}`}
-                data-reveal=""
-                style={{ '--delay': `${i * 90}ms` } as CSSProperties}
-                onMouseEnter={() => setActive(i)}
-                onFocus={() => setActive(i)}
+          <div className="menu">
+            {categories.map((c, ci) => (
+              <section
+                key={c.id}
+                className={`menu-group${active === ci ? ' is-active' : ''}`}
+                aria-labelledby={`menu-${c.id}`}
+                onMouseEnter={() => setActive(ci)}
+                onFocus={() => setActive(ci)}
               >
-                <span className="menu-num">{String(i + 1).padStart(2, '0')}</span>
-                <div className="menu-main">
-                  <h3 className="menu-name">{s.name}</h3>
-                  <p className="menu-desc">{s.description}</p>
-                </div>
-                <p className="menu-meta">
-                  <span className="menu-price">{priceLabel(s.price)}<small> CAD</small></span>
-                  <span className="menu-time">{s.minutes} min</span>
-                </p>
-                <button type="button" className="menu-book" onClick={() => onBook(i)}>
-                  Réserver<span className="sr-only"> — {s.name}</span>
-                  <Arrow />
-                </button>
-              </li>
+                <h3 className="menu-cat" id={`menu-${c.id}`} data-reveal="">
+                  <span>{String(ci + 1).padStart(2, '0')}</span>
+                  {c.label}
+                </h3>
+                <ul className="menu-list">
+                  {services.map((s, i) => {
+                    if (s.category !== c.id || s.combo) return null;
+                    const combo = comboOf(i);
+                    return (
+                      <li key={s.key} className="menu-row" data-reveal="" style={{ '--delay': `${(i % 4) * 60}ms` } as CSSProperties}>
+                        <p className="menu-name">
+                          {s.name}
+                          {s.note && <small>{s.note}</small>}
+                        </p>
+                        <p className="menu-price">{priceLabel(s)}</p>
+                        <div className="menu-actions">
+                          {combo >= 0 && (
+                            <button type="button" className="menu-combo" onClick={() => onBook(combo)}>
+                              + barbe {priceLabel(services[combo])}
+                              <span className="sr-only"> — réserver {services[combo].name}</span>
+                            </button>
+                          )}
+                          <button type="button" className="menu-book" onClick={() => onBook(i)}>
+                            Réserver<span className="sr-only"> — {s.name}</span>
+                            <Arrow />
+                          </button>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
             ))}
-          </ol>
+            <p className="menu-foot" data-reveal="">Prix en dollars canadiens. « Dès » : le prix final dépend de la longueur et du volume.</p>
+          </div>
 
           <figure className="services-photo" aria-hidden="true">
-            {services.map((s, i) => (
+            {categories.map((c, ci) => (
               <img
-                key={s.key}
-                src={PHOTOS[s.key]}
+                key={c.id}
+                src={PHOTOS[c.id]}
                 alt=""
                 loading="lazy"
                 decoding="async"
-                className={active === i ? 'is-shown' : undefined}
+                className={active === ci ? 'is-shown' : undefined}
               />
             ))}
             <figcaption>
-              <span>{String(active + 1).padStart(2, '0')}</span> / 03 — {services[active].name}
+              <span>{String(active + 1).padStart(2, '0')}</span> / {String(categories.length).padStart(2, '0')} — {categories[active].label}
             </figcaption>
           </figure>
         </div>

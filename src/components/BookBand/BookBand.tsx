@@ -32,11 +32,11 @@ export function BookBand({ onBook }: { onBook: (svc?: number) => void }) {
           <div className="band-card-body">
             <p className="band-card-label">Commencez par votre service</p>
             <ul className="band-picks">
-              {services.map((s, i) => (
+              {services.map((s, i) => s.featured && (
                 <li key={s.key}>
                   <button type="button" className="band-pick" onClick={() => onBook(i)}>
                     <span className="band-pick-name">{s.name}</span>
-                    <span className="band-pick-meta">{s.minutes} min · {priceLabel(s.price)}</span>
+                    <span className="band-pick-meta">{priceLabel(s)}</span>
                   </button>
                 </li>
               ))}

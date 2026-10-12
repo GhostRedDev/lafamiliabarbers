@@ -114,14 +114,22 @@
 }
 
 .bk-list, .bk-barbers, .bk-days, .bk-times { list-style: none; margin: 0; padding: 0; }
-.bk-list { display: grid; gap: 10px; }
+.bk-list { display: grid; gap: 8px; }
+.bk-group + .bk-group { margin-top: 22px; }
+.bk-group-title {
+  margin: 0 0 10px;
+  color: var(--bone-mute);
+  font: 600 11px/1 var(--body);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
 
 .bk-svc {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 8px 16px;
-  padding: 20px 20px 20px 22px;
+  padding: 14px 16px 14px 18px;
   border: 1px solid var(--line);
   background: var(--ink-2);
   color: var(--bone);
@@ -137,7 +145,7 @@
   box-shadow: inset 3px 0 0 var(--red);
 }
 
-.bk-svc-name { font-family: var(--display); font-weight: 500; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 0.02em; }
+.bk-svc-name { font-family: var(--display); font-weight: 500; font-size: 1.15rem; text-transform: uppercase; letter-spacing: 0.02em; }
 .bk-svc-meta { align-self: center; color: var(--bone-dim); font-size: 0.88rem; white-space: nowrap; }
 .bk-svc-desc { grid-column: 1 / -1; color: var(--bone-mute); font-size: 0.88rem; line-height: 1.55; }
 

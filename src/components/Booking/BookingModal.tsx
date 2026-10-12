@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import logo from '../../assets/logo-la-familia.png';
 import { STEP_COUNT, type BookingState } from '../../hooks/useBooking';
-import { priceLabel, services } from '../../content/services';
+import { categories, priceLabel, services } from '../../content/services';
 import { whatsappHref } from '../../content/site';
 
 const STEPS: ReadonlyArray<[string, string]> = [
@@ -96,19 +96,22 @@ export function BookingModal({ b }: { b: BookingState }) {
 
         <div className="bk-body" ref={bodyRef}>
           <div className="bk-step" key={b.sent ? 'sent' : step}>
-            {step === 0 && (
-              <ul className="bk-list">
-                {services.map((s, i) => (
-                  <li key={s.key}>
-                    <button type="button" className="bk-svc" aria-pressed={b.service === i} onClick={() => b.setService(i)}>
-                      <span className="bk-svc-name">{s.name}</span>
-                      <span className="bk-svc-meta">{s.minutes} min · {priceLabel(s.price)}</span>
-                      <span className="bk-svc-desc">{s.description}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
+            {step === 0 && categories.map((c) => (
+              <section key={c.id} className="bk-group" aria-labelledby={`bk-${c.id}`}>
+                <p className="bk-group-title" id={`bk-${c.id}`}>{c.label}</p>
+                <ul className="bk-list">
+                  {services.map((s, i) => s.category !== c.id ? null : (
+                    <li key={s.key}>
+                      <button type="button" className="bk-svc" aria-pressed={b.service === i} onClick={() => b.setService(i)}>
+                        <span className="bk-svc-name">{s.name}</span>
+                        <span className="bk-svc-meta">{priceLabel(s)}</span>
+                        {s.note && <span className="bk-svc-desc">{s.note}</span>}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
 
             {step === 1 && !b.teamReady && <p className="bk-note" aria-live="polite">Chargement de l’équipe…</p>}
             {step === 1 && (
@@ -206,7 +209,7 @@ export function BookingModal({ b }: { b: BookingState }) {
               <div className="bk-summary">
                 <dl className="bk-ticket theme-dark">
                   {([
-                    ['Service', svc ? `${svc.name} · ${priceLabel(svc.price)}` : '—'],
+                    ['Service', svc ? `${svc.name} · ${priceLabel(svc)}` : '—'],
                     ['Barbier', b.chosen.name],
                     ['Date', longDate(b.day.iso)],
                     ['Heure', b.slot ? b.slot.time : '—'],

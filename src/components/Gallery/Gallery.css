@@ -12,7 +12,8 @@
 .gallery-head .title { margin-top: 20px; }
 .gallery-head .lead { max-width: 40ch; margin: 0; }
 
-/* Mosaico de 12 columnas: retrato alto a la izquierda, panorámica arriba, el resto encajado. */
+/* Mosaico de 12 columnas: retrato alto a un lado, panorámica arriba, el resto encajado; el
+   segundo bloque de seis (g-g…g-l) repite el primero en espejo. */
 .mosaic {
   list-style: none;
   margin: 0;
@@ -29,6 +30,12 @@
 .g-d { grid-area: 5 / 8 / 8 / 13; }
 .g-e { grid-area: 7 / 1 / 12 / 5; }
 .g-f { grid-area: 8 / 8 / 12 / 13; }
+.g-g { grid-area: 12 / 9 / 18 / 13; }
+.g-h { grid-area: 12 / 1 / 16 / 9; }
+.g-i { grid-area: 16 / 6 / 23 / 9; }
+.g-j { grid-area: 16 / 1 / 19 / 6; }
+.g-k { grid-area: 18 / 9 / 23 / 13; }
+.g-l { grid-area: 19 / 1 / 23 / 6; }
 
 .tile { position: relative; overflow: hidden; background: var(--ink-3); }
 
@@ -43,8 +50,6 @@
   transform: scale(1.03);
   transition: filter 700ms var(--ease-out), transform 1200ms var(--ease-out);
 }
-
-.g-a img { object-position: 50% 30%; }
 
 .tile:hover img { filter: grayscale(0) contrast(1.05) brightness(0.95); transform: scale(1.07); }
 
@@ -83,12 +88,8 @@
 
 @media (max-width: 1023px) {
   .mosaic { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: clamp(150px, 26vw, 240px); }
-  .g-a { grid-area: span 2 / span 1; }
-  .g-b { grid-area: span 1 / span 1; }
-  .g-c { grid-area: span 2 / span 1; }
-  .g-d { grid-area: span 1 / span 1; }
-  .g-e { grid-area: span 2 / span 1; }
-  .g-f { grid-area: span 2 / span 1; }
+  .g-a, .g-c, .g-e, .g-f, .g-g, .g-i, .g-k, .g-l { grid-area: span 2 / span 1; }
+  .g-b, .g-d, .g-h, .g-j { grid-area: span 1 / span 1; }
 }
 
 /* Móvil: tira horizontal que se desliza (la siguiente foto asoma por el borde) en vez de una
