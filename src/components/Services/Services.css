@@ -71,6 +71,7 @@
 .menu-list { list-style: none; margin: 0; padding: 0; }
 
 .menu-row {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
@@ -79,7 +80,24 @@
   border-bottom: 1px solid var(--line);
 }
 
+/* Filete rojo que crece bajo la fila activa (como antes de la carta por categorías). */
+.menu-row::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 1px;
+  width: 100%;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 700ms var(--ease-out);
+}
+
+.menu-row.is-active::before { transform: scaleX(1); }
+
 .menu-name {
+  transition: transform 400ms var(--ease-out), color 300ms;
   margin: 0;
   font-family: var(--display);
   font-weight: 500;
@@ -131,7 +149,8 @@
 .menu-combo:hover { color: var(--bone); box-shadow: inset 0 0 0 1px var(--red); }
 
 .menu-book svg { width: 14px; height: 14px; transition: transform 400ms var(--ease-out); }
-.menu-book:hover { background: var(--red-ink); color: var(--paper); box-shadow: none; }
+.menu-row.is-active .menu-name { transform: translateX(8px); }
+.menu-book:hover, .menu-row.is-active .menu-book { background: var(--red-ink); color: var(--paper); box-shadow: none; }
 .menu-book:hover svg { transform: translateX(3px); }
 
 .menu-foot { margin: 0; color: var(--bone-mute); font-size: 0.85rem; }
@@ -175,8 +194,10 @@
   .services-body { grid-template-columns: 1fr; }
   .services-photo { display: none; }
   /* Sin foto al lado (y sin hover en táctil) la categoría activa parecería una recomendación. */
-  .menu-cat::after { display: none; }
+  .menu-cat::after, .menu-row::before { display: none; }
   .menu-group.is-active .menu-cat span { color: var(--bone-mute); }
+  .menu-row.is-active .menu-name { transform: none; }
+  .menu-row.is-active .menu-book { background: transparent; color: var(--bone); box-shadow: inset 0 0 0 1px var(--line-strong); }
 }
 
 @media (max-width: 767px) {

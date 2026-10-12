@@ -254,11 +254,11 @@ button { font: inherit; color: inherit; }
 
 /* ---------- Tema claro = impreso ----------
    Un solo papel de fondo, fotos en blanco y negro (el color lo ponen los títulos en rojo vino),
-   grano quieto y el logo como tinta sobre el papel. Las islas rojas/oscuras no cambian. */
+   grano quieto y el logo como tinta sobre el papel. Las islas rojas/oscuras no cambian. La foto
+   del fundador (.manifesto-media) se queda a color a propósito: es la que tiene que resaltar. */
 :root[data-theme='light'] .services,
 :root[data-theme='light'] .gallery,
 :root[data-theme='light'] .faq { background: var(--ink); --wipe-bg: var(--ink); border-top-color: var(--line-strong); }
-:root[data-theme='light'] .manifesto-media img,
 :root[data-theme='light'] .services-photo img,
 :root[data-theme='light'] .tile img { filter: grayscale(1) contrast(1.12) brightness(0.96); }
 :root[data-theme='light'] .tile:hover img { filter: grayscale(0) contrast(1.04); }

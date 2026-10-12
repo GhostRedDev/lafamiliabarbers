@@ -1,10 +1,25 @@
 import { useState, type CSSProperties } from 'react';
-import braids from '../../assets/photos/braids-top-800.webp';
+import beardFade from '../../assets/photos/beard-fade-800.webp';
+import beardTrim from '../../assets/photos/beard-trim.webp';
+import blonde from '../../assets/photos/blonde-crop-800.webp';
+import braidsDuo from '../../assets/photos/braids-duo-800.webp';
+import braidsSide from '../../assets/photos/braids-side-800.webp';
+import braidsTop from '../../assets/photos/braids-top-800.webp';
+import clientFade from '../../assets/photos/client-fade-800.webp';
+import designBarber from '../../assets/photos/design-barber-800.webp';
 import design from '../../assets/photos/design-flames-800.webp';
 import towel from '../../assets/photos/hot-towel.webp';
-import { categories, comboOf, priceLabel, services, type CategoryId } from '../../content/services';
+import { categories, comboOf, priceLabel, services } from '../../content/services';
 
-const PHOTOS: Record<CategoryId, string> = { coupes: design, barbe: towel, tresses: braids };
+// Foto de cada servicio (clave de services.ts); los combos "+ barbe" usan la de su base.
+const PHOTOS: Record<string, string> = {
+  coupe: blonde, enfant: clientFade, degrade: beardFade, rasage: designBarber,
+  barbe: beardTrim, serviette: towel, facial: towel, masque: towel, cire: beardFade, spray: design,
+  tresses: braidsTop, twist: braidsSide, locs: braidsDuo,
+};
+
+// Servicios con fila propia (sin los combos), con su índice en `services` para reservar.
+const ROWS = services.map((s, i) => ({ s, i })).filter(({ s }) => !s.combo);
 
 const Arrow = () => (
   <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -14,10 +29,11 @@ const Arrow = () => (
 
 /**
  * Liste des prix: una tabla por categoría (nombre, precio, "Réserver" y, si existe, la variante
- * "+ barbe" que reserva ese combo). En escritorio la foto de la categoría activa acompaña a la lista.
+ * "+ barbe" que reserva ese combo). En escritorio la foto del servicio activo acompaña a la lista.
  */
 export function Services({ onBook }: { onBook: (svc: number) => void }) {
   const [active, setActive] = useState(0);
+  const current = ROWS[active].s;
 
   return (
     <section className="services" id="services" aria-labelledby="services-title">
@@ -37,21 +53,26 @@ export function Services({ onBook }: { onBook: (svc: number) => void }) {
             {categories.map((c, ci) => (
               <section
                 key={c.id}
-                className={`menu-group${active === ci ? ' is-active' : ''}`}
+                className={`menu-group${current.category === c.id ? ' is-active' : ''}`}
                 aria-labelledby={`menu-${c.id}`}
-                onMouseEnter={() => setActive(ci)}
-                onFocus={() => setActive(ci)}
               >
                 <h3 className="menu-cat" id={`menu-${c.id}`} data-reveal="">
                   <span>{String(ci + 1).padStart(2, '0')}</span>
                   {c.label}
                 </h3>
                 <ul className="menu-list">
-                  {services.map((s, i) => {
-                    if (s.category !== c.id || s.combo) return null;
+                  {ROWS.map(({ s, i }, r) => {
+                    if (s.category !== c.id) return null;
                     const combo = comboOf(i);
                     return (
-                      <li key={s.key} className="menu-row" data-reveal="" style={{ '--delay': `${(i % 4) * 60}ms` } as CSSProperties}>
+                      <li
+                        key={s.key}
+                        className={`menu-row${active === r ? ' is-active' : ''}`}
+                        data-reveal=""
+                        style={{ '--delay': `${(r % 4) * 60}ms` } as CSSProperties}
+                        onMouseEnter={() => setActive(r)}
+                        onFocus={() => setActive(r)}
+                      >
                         <p className="menu-name">
                           {s.name}
                           {s.note && <small>{s.note}</small>}
@@ -79,18 +100,18 @@ export function Services({ onBook }: { onBook: (svc: number) => void }) {
           </div>
 
           <figure className="services-photo" aria-hidden="true">
-            {categories.map((c, ci) => (
+            {ROWS.map(({ s }, r) => (
               <img
-                key={c.id}
-                src={PHOTOS[c.id]}
+                key={s.key}
+                src={PHOTOS[s.key]}
                 alt=""
                 loading="lazy"
                 decoding="async"
-                className={active === ci ? 'is-shown' : undefined}
+                className={active === r ? 'is-shown' : undefined}
               />
             ))}
             <figcaption>
-              <span>{String(active + 1).padStart(2, '0')}</span> / {String(categories.length).padStart(2, '0')} — {categories[active].label}
+              <span>{String(active + 1).padStart(2, '0')}</span> / {String(ROWS.length).padStart(2, '0')} — {current.name}
             </figcaption>
           </figure>
         </div>

@@ -1,4 +1,4 @@
-import realLg from '../../assets/photos/client-fade-800.webp';
+import owner from '../../assets/photos/owner.webp';
 import { Fragment, type CSSProperties } from 'react';
 
 // Párrafo de la portada del export (con "La Familia" en lugar de "Punta Cana Barbier"). Las
@@ -20,11 +20,13 @@ export function Manifesto() {
   return (
     <section className="manifesto" id="manifeste" aria-labelledby="manifesto-title">
       <div className="wrap manifesto-grid">
+        {/* El dueño del salon, a la vista desde la primera sección. */}
         <figure className="manifesto-media" data-reveal="wipe">
           <div className="manifesto-photo">
-            <img src={realLg} alt="Dégradé à blanc et barbe taillée, réalisés au salon La Familia" width="640" height="1136" loading="lazy" decoding="async" />
+            <img src={owner} alt="Le fondateur de La Familia taillant la barbe d’un client au salon" width="808" height="540" loading="lazy" decoding="async" />
+            <span className="manifesto-badge">Le fondateur</span>
           </div>
-          <figcaption>Au salon · Laval</figcaption>
+          <figcaption><span>La Familia</span> · Fondé en 2020 · Laval</figcaption>
         </figure>
 
         <div className="manifesto-copy">
