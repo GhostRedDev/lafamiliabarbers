@@ -1,0 +1,11 @@
+# Vercel compila en su servidor (npm run build): solo hace falta el código fuente.
+node_modules
+dist
+_export-original
+*.zip
+*.log
+.env
+.env.*
+!.env.example
+server/.env
+.claude

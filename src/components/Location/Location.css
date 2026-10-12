@@ -1,0 +1,103 @@
+.location { padding: var(--section-y) 0; background: var(--ink); }
+
+.location-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(40px, 6vw, 96px);
+  align-items: stretch;
+}
+
+.location-info { display: flex; flex-direction: column; gap: 28px; }
+.location-info .title { font-size: clamp(2.6rem, 5.4vw, 5rem); }
+
+.location-address {
+  font-style: normal;
+  font-family: var(--display);
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.location-label {
+  margin: 0 0 12px;
+  color: var(--bone-mute);
+  font: 600 11px/1 var(--body);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.location-hours dl { margin: 0; border-top: 1px solid var(--line); }
+
+.location-hours dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.location-hours dt { display: flex; align-items: center; gap: 12px; }
+.location-hours dd { margin: 0; color: var(--bone-dim); font-variant-numeric: tabular-nums; }
+.location-hours .is-today dd { color: var(--bone); }
+.location-hours .is-closed dd { color: var(--red-light); }
+
+.location-today {
+  padding: 4px 8px;
+  background: var(--red-ink);
+  color: var(--paper);
+  font: 700 9.5px/1 var(--body);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.location-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
+
+.location-map {
+  position: relative;
+  min-height: 420px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--ink-3);
+}
+
+/* Mapa oscuro: Google no deja estilizar el embed, así que se invierte y se tiñe. */
+.location-map iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  filter: grayscale(1) invert(0.9) contrast(0.95) brightness(0.9);
+}
+
+[data-theme='light'] .location-map iframe { filter: grayscale(1) sepia(0.15) contrast(1.02); }
+[data-theme='light'] .location-map::after { background: rgb(152 0 0 / 0.04); }
+
+.location-map::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(152 0 0 / 0.14);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.location-review {
+  position: absolute;
+  z-index: 1;
+  right: 16px;
+  bottom: 16px;
+  padding: 12px 16px;
+  background: var(--red);
+  color: var(--paper);
+  font: 700 11px/1 var(--body);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+@media (max-width: 899px) {
+  .location-grid { grid-template-columns: 1fr; }
+  .location-map { min-height: 340px; }
+}

@@ -1,0 +1,169 @@
+.services {
+  position: relative;
+  padding: var(--section-y) 0;
+  background: var(--ink-2);
+  border-top: 1px solid var(--line);
+}
+
+.services-head {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+  grid-template-areas: "kicker kicker" "title lead";
+  align-items: end;
+  gap: 20px clamp(32px, 6vw, 96px);
+  margin-bottom: clamp(48px, 7vw, 96px);
+}
+
+.services-head .kicker { grid-area: kicker; }
+.services-head .title { grid-area: title; }
+.services-head .lead { grid-area: lead; margin: 0; }
+
+.services-body {
+  display: grid;
+  grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: start;
+}
+
+.menu { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--line); }
+
+.menu-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: clamp(16px, 3vw, 40px);
+  padding: clamp(26px, 3.4vw, 40px) 0;
+  border-top: 1px solid var(--line);
+}
+
+/* Filete rojo que crece en la fila activa. */
+.menu-row::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -1px;
+  height: 1px;
+  width: 100%;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 700ms var(--ease-out);
+}
+
+.menu-row.is-active::before { transform: scaleX(1); }
+
+.menu-row .menu-num {
+  font-variant-numeric: tabular-nums;
+  align-self: start;
+  padding-top: 0.7em;
+  color: var(--bone-mute);
+  font: 600 12px/1 var(--body);
+  letter-spacing: 0.16em;
+  transition: color 300ms;
+}
+
+.menu-row.is-active .menu-num { color: var(--red-light); }
+
+.menu-name {
+  margin: 0 0 10px;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(1.9rem, 3.6vw, 3.1rem);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.menu-desc { margin: 0; max-width: 46ch; color: var(--bone-dim); font-size: 0.97rem; line-height: 1.6; }
+
+.menu-meta { margin: 0; display: grid; justify-items: end; gap: 8px; white-space: nowrap; }
+
+.menu-price {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(1.7rem, 2.6vw, 2.3rem);
+  line-height: 1;
+}
+
+.menu-price small { font: 600 11px/1 var(--body); letter-spacing: 0.18em; color: var(--bone-mute); }
+
+.menu-time {
+  color: var(--bone-mute);
+  font: 600 11px/1 var(--body);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.menu-book {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 18px;
+  border: 0;
+  background: transparent;
+  color: var(--bone);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  font: 700 11.5px/1 var(--body);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 250ms, box-shadow 250ms;
+}
+
+.menu-book svg { width: 14px; height: 14px; transition: transform 400ms var(--ease-out); }
+.menu-book:hover, .menu-row.is-active .menu-book { background: var(--red-ink); color: var(--paper); box-shadow: none; }
+.menu-book:hover svg { transform: translateX(3px); }
+
+.services-photo { position: sticky; top: 110px; margin: 0; display: grid; }
+
+.services-photo { overflow: hidden; }
+
+/* La foto del servicio activo entra como una cortina desde la izquierda, por encima de la
+   anterior, que se cierra después. */
+.services-photo img {
+  grid-area: 1 / 1;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  z-index: 1;
+  clip-path: inset(0 0 0 100%);
+  transform: scale(1.12);
+  filter: grayscale(0.35) contrast(1.08) brightness(0.85);
+  transition: clip-path 900ms var(--ease-in-out) 500ms, transform 1400ms var(--ease-out);
+}
+
+.services-photo img.is-shown {
+  z-index: 2;
+  clip-path: inset(0 0 0 0);
+  transform: none;
+  transition: clip-path 900ms var(--ease-in-out), transform 1400ms var(--ease-out);
+}
+
+.services-photo figcaption {
+  margin-top: 14px;
+  color: var(--bone-mute);
+  font: 600 11px/1 var(--body);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.services-photo figcaption span { color: var(--red-light); }
+
+@media (max-width: 1023px) {
+  .services-body { grid-template-columns: 1fr; }
+  .services-photo { display: none; }
+  /* Sin foto al lado (y sin hover en táctil) la fila activa parecería una recomendación. */
+  .menu-row::before { display: none; }
+  .menu-row.is-active .menu-num { color: var(--bone-mute); }
+  .menu-row.is-active .menu-book { background: transparent; color: var(--bone); box-shadow: inset 0 0 0 1px var(--line-strong); }
+}
+
+@media (max-width: 767px) {
+  .services-head { grid-template-columns: 1fr; grid-template-areas: "kicker" "title" "lead"; }
+  .menu-row { grid-template-columns: 36px minmax(0, 1fr); row-gap: 18px; }
+  .menu-meta { grid-column: 2; display: flex; align-items: baseline; gap: 16px; }
+  .menu-book { grid-column: 2; justify-self: start; }
+}

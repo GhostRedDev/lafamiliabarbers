@@ -1,0 +1,53 @@
+.final {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: clamp(120px, 16vw, 220px) 0;
+  text-align: center;
+  background: var(--blood);
+}
+
+.final-img {
+  position: absolute;
+  inset: -80px 0;
+  z-index: -2;
+  width: 100%;
+  height: calc(100% + 160px);
+  translate: 0 calc(var(--p, 0) * 90px);
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.2) brightness(0.45);
+  mix-blend-mode: luminosity;
+  opacity: 0.42;
+}
+
+.final-veil {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(70% 80% at 50% 50%, rgb(152 0 0 / 0.42), transparent 70%),
+    linear-gradient(to bottom, var(--ink) 0%, transparent 22%, transparent 78%, var(--ink) 100%);
+}
+
+/* En claro no se funde a negro: el bloque es una isla roja con bordes netos entre papel. */
+:root[data-theme='light'] .final-veil {
+  background:
+    radial-gradient(70% 80% at 50% 50%, rgb(152 0 0 / 0.42), transparent 70%),
+    linear-gradient(to bottom, rgb(12 9 9 / 0.35), transparent 30%, transparent 70%, rgb(12 9 9 / 0.35));
+}
+
+.final-inner { display: grid; justify-items: center; gap: 28px; }
+.final-inner .kicker { justify-content: center; color: var(--blush); }
+
+.final-title {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(2.1rem, 6.6vw, 6.4rem);
+  line-height: 0.98;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.final-title span, .final-title em { display: block; }
+.final-title em { font-style: normal; color: var(--red-light); }

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La Familia — Salon de barbier à Laval</title>
+<meta name="description" content="La Familia, salon de barbier à Laval : coupes précises, dégradés, rasage traditionnel. Réservez votre rendez-vous en ligne en quelques clics.">
+<meta name="theme-color" content="#0c0909">
+<script>
+  // Tema antes de pintar (sin parpadeo): la elección guardada o la del sistema.
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('lafamilia-theme'); } catch (e) {}
+    if (t !== 'light' && t !== 'dark') t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+    // Telón de entrada de la portada: una vez por sesión, sin movimiento reducido ni enlace a una sección.
+    try {
+      if (!sessionStorage.getItem('lafamilia-intro') && !location.hash &&
+          !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('has-intro');
+        sessionStorage.setItem('lafamilia-intro', '1');
+      }
+    } catch (e) {}
+  })();
+</script>
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_CA">
+<meta property="og:title" content="La Familia — Salon de barbier à Laval">
+<meta property="og:description" content="Coupes précises, dégradés et rasage traditionnel. Réservation en ligne.">
+<meta property="og:image" content="https://la-familia-barber.vercel.app/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+</head>
+<body>
+<div id="root"></div>
+<script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

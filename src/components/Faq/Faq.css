@@ -1,0 +1,83 @@
+.faq { padding: var(--section-y) 0; background: var(--ink-2); border-top: 1px solid var(--line); }
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+  gap: clamp(32px, 6vw, 96px);
+  align-items: start;
+}
+
+.faq-head { position: sticky; top: 110px; }
+.faq-head .title { margin-top: 20px; font-size: clamp(2.4rem, 4.6vw, 4.2rem); }
+
+.faq-list { border-bottom: 1px solid var(--line); }
+.faq-item { border-top: 1px solid var(--line); }
+.faq-item h3 { margin: 0; }
+
+.faq-item button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 24px;
+  align-items: center;
+  gap: 16px;
+  padding: 26px 0;
+  border: 0;
+  background: none;
+  color: var(--bone);
+  text-align: left;
+  cursor: pointer;
+}
+
+.faq-num { color: var(--bone-mute); font: 600 11px/1 var(--body); letter-spacing: 0.16em; transition: color 300ms; }
+
+.faq-q {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  transition: color 300ms;
+}
+
+.faq-item button:hover .faq-q { color: var(--red-light); }
+.faq-item.is-open .faq-num { color: var(--red-light); }
+
+/* Más que se convierte en menos. */
+.faq-icon { position: relative; width: 18px; height: 18px; justify-self: end; }
+
+.faq-icon::before,
+.faq-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  transition: transform 450ms var(--ease-out);
+}
+
+.faq-icon::after { transform: rotate(90deg); }
+.faq-item.is-open .faq-icon::after { transform: rotate(0deg); }
+.faq-item.is-open .faq-icon { color: var(--red-light); }
+
+/* Cerrada: altura 0 y oculta también para lectores de pantalla (visibility al final del cierre). */
+.faq-a { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows 500ms var(--ease-out), visibility 0s 500ms; }
+.faq-item.is-open .faq-a { grid-template-rows: 1fr; visibility: visible; transition-delay: 0s; }
+.faq-a > div { overflow: hidden; }
+
+.faq-a p {
+  margin: 0;
+  padding: 0 40px 28px 60px;
+  max-width: 64ch;
+  color: var(--bone-dim);
+  line-height: 1.7;
+}
+
+@media (max-width: 899px) {
+  .faq-grid { grid-template-columns: 1fr; }
+  .faq-head { position: static; }
+  .faq-item button { grid-template-columns: 32px minmax(0, 1fr) 20px; }
+  .faq-a p { padding: 0 0 24px 48px; }
+}

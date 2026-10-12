@@ -1,0 +1,267 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Grano de película fijo sobre todo el sitio: quita el aspecto "plano digital". */
+body::after {
+  content: '';
+  position: fixed;
+  inset: -50%;
+  z-index: 300;
+  pointer-events: none;
+  opacity: var(--grain);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(6) infinite;
+}
+
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; }
+
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--red-light);
+  outline-offset: 3px;
+}
+
+::selection { background: var(--red); color: var(--paper); }
+
+.wrap {
+  width: 100%;
+  max-width: calc(var(--wrap) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.nowrap { white-space: nowrap; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Rótulo pequeño de sección: "N° 02 — Services" */
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0;
+  color: var(--red-light);
+  font: 600 12px/1 var(--body);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.kicker::before {
+  content: '';
+  width: 36px;
+  height: 1px;
+  background: currentColor;
+}
+
+/* Títulos de sección: Oswald en mayúsculas, apretado */
+.title {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: clamp(2.6rem, 6.4vw, 6rem);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.title em { font-style: normal; color: var(--red-light); }
+
+.lead {
+  margin: 0;
+  max-width: 46ch;
+  color: var(--bone-dim);
+  font-size: clamp(1rem, 1.25vw, 1.125rem);
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+/* ---------- Botones: esquinas rectas, mayúsculas espaciadas ---------- */
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 54px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  font: 700 12.5px/1 var(--body);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  isolation: isolate;
+  overflow: hidden;
+  /* `translate`: botones magnéticos (src/lib/motion.ts). */
+  transition: background-color 350ms var(--ease-out), color 350ms var(--ease-out), box-shadow 350ms var(--ease-out), translate 450ms var(--ease-out);
+}
+
+/* Relleno que barre el botón al pasar el ratón (y se va por el otro lado al salir). */
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 600ms var(--ease-out);
+}
+
+.btn:hover:not([disabled])::before { transform: scaleX(1); transform-origin: left; }
+
+.btn svg { width: 16px; height: 16px; transition: transform 400ms var(--ease-out); }
+.btn:hover svg { transform: translateX(4px); }
+
+.btn--red { background: var(--red-ink); color: var(--paper); }
+.btn--red::before { background: var(--wine); }
+
+.btn--line { background: transparent; color: var(--bone); box-shadow: inset 0 0 0 1px var(--line-strong); }
+.btn--line::before { background: var(--red-ink); }
+.btn--line:hover:not([disabled]) { color: var(--paper); box-shadow: inset 0 0 0 1px var(--red-ink); }
+
+
+.btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+:root[data-theme='light'] .btn--red[disabled] { opacity: 1; background: var(--ink-3); color: var(--bone-mute); }
+
+/* Enlace subrayado en rojo (como el "Записаться" de la referencia) */
+.underline-link {
+  position: relative;
+  display: inline-block;
+  /* Zona táctil de 29 px sin mover el texto. */
+  padding: 12px 0 8px;
+  margin-top: -12px;
+  border: 0;
+  background: none;
+  color: var(--bone);
+  text-decoration: none;
+  cursor: pointer;
+  font: 700 12.5px/1 var(--body);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.underline-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--red);
+  transform-origin: left;
+  transition: transform 500ms var(--ease-out);
+}
+
+.underline-link:hover::after { transform: scaleX(0.35); }
+
+/* ---------- Aparición al hacer scroll ---------- */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 36px, 0);
+  transition: opacity 900ms var(--ease-out), transform 1100ms var(--ease-out);
+  transition-delay: var(--delay, 0ms);
+}
+
+[data-reveal].is-in { opacity: 1; transform: none; }
+
+/* Titulares: suben desde detrás de una máscara en vez de solo aparecer. */
+.title[data-reveal],
+.band-title[data-reveal],
+.final-title[data-reveal] {
+  opacity: 1;
+  /* 1 px visible: ver useReveal en App.tsx. */
+  clip-path: inset(0 0 calc(100% - 1px) 0);
+  transform: translate3d(0, 0.35em, 0);
+  transition: clip-path 1100ms var(--ease-out), transform 1100ms var(--ease-out);
+  transition-delay: var(--delay, 0ms);
+}
+
+.title[data-reveal].is-in,
+.band-title[data-reveal].is-in,
+.final-title[data-reveal].is-in { clip-path: inset(-0.2em -1em -0.25em -0.2em); transform: none; }
+
+/* Rótulos: el filete se dibuja antes que el texto. */
+.kicker[data-reveal]::before { transform: scaleX(0); transform-origin: left; transition: transform 900ms var(--ease-out) 150ms; }
+.kicker[data-reveal].is-in::before { transform: none; }
+
+/* Fotos: una capa del color de la sección se recoge hacia arriba como una cortina y la imagen
+   se asienta. (No se usa clip-path en el propio elemento: Chrome lo tiene en cuenta en el
+   IntersectionObserver y el elemento nunca "entraría" en pantalla.) El elemento debe estar
+   posicionado; --wipe-bg = fondo de la sección. */
+[data-reveal='wipe'] { opacity: 1; transform: none; }
+
+[data-reveal='wipe']::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: 4;
+  background: var(--wipe-bg, var(--ink));
+  transform-origin: 50% 0;
+  transition: transform 1300ms var(--ease-in-out);
+  transition-delay: var(--delay, 0ms);
+  pointer-events: none;
+}
+
+[data-reveal='wipe'] img { scale: 1.22; transition: scale 1800ms var(--ease-out); transition-delay: var(--delay, 0ms); }
+[data-reveal='wipe'].is-in::before { transform: scaleY(0); }
+[data-reveal='wipe'].is-in img { scale: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal], .title[data-reveal], .band-title[data-reveal], .final-title[data-reveal] { opacity: 1; transform: none; clip-path: none; }
+  [data-reveal] img { scale: 1; }
+  [data-reveal='wipe']::before { display: none; }
+  .kicker[data-reveal]::before { transform: none; }
+}
+
+/* ---------- Tema claro = impreso ----------
+   Un solo papel de fondo, fotos en blanco y negro (el color lo ponen los títulos en rojo vino),
+   grano quieto y el logo como tinta sobre el papel. Las islas rojas/oscuras no cambian. */
+:root[data-theme='light'] .services,
+:root[data-theme='light'] .gallery,
+:root[data-theme='light'] .faq { background: var(--ink); --wipe-bg: var(--ink); border-top-color: var(--line-strong); }
+:root[data-theme='light'] .manifesto-media img,
+:root[data-theme='light'] .services-photo img,
+:root[data-theme='light'] .tile img { filter: grayscale(1) contrast(1.12) brightness(0.96); }
+:root[data-theme='light'] .tile:hover img { filter: grayscale(0) contrast(1.04); }
+:root[data-theme='light'] body::after { animation: none; }
+:root[data-theme='light'] .footer-logo img,
+:root[data-theme='light'] .topbar-inner:not(.theme-dark) .topbar-logo img { filter: invert(1); mix-blend-mode: multiply; }

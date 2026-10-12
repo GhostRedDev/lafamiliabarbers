@@ -1,0 +1,364 @@
+/* ---------- Portada (referencia "Franklin") ---------- */
+
+/* Telón de entrada: index.html pone .has-intro en <html> una vez por sesión (sin movimiento
+   reducido). Todo lo de la portada espera a que suba el telón. */
+:root { --intro: 0ms; }
+html.has-intro { --intro: 1150ms; }
+
+.hero {
+  --mx: 0;
+  --my: 0;
+  --hp: 0;
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--ink);
+}
+
+.hero-intro { display: none; }
+
+.has-intro .hero-intro {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 26px;
+  background:
+    radial-gradient(50% 50% at 50% 50%, rgb(152 0 0 / 0.5), transparent 75%),
+    var(--blood);
+  pointer-events: none;
+  animation: intro-out 750ms var(--ease-in-out) 950ms forwards;
+}
+
+.hero-intro img {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.86);
+  animation: intro-logo 700ms var(--ease-out) 80ms forwards, intro-logo-out 500ms var(--ease-in-out) 900ms forwards;
+}
+
+.hero-intro-line {
+  width: 140px;
+  height: 1.5px;
+  background: var(--red-hot);
+  transform: scaleX(0);
+  animation: intro-line 800ms var(--ease-in-out) 150ms forwards;
+}
+
+@keyframes intro-logo { to { opacity: 1; transform: none; } }
+@keyframes intro-logo-out { to { opacity: 0; transform: translateY(-24px); } }
+@keyframes intro-line { to { transform: scaleX(1); } }
+@keyframes intro-out { to { clip-path: inset(0 0 100% 0); visibility: hidden; } }
+
+/* La barra superior entra cuando sube el telón. */
+.has-intro .topbar-inner { animation: topbar-in 900ms var(--ease-out) calc(var(--intro) + 150ms) backwards; }
+@keyframes topbar-in { from { opacity: 0; transform: translateY(-14px); } }
+
+.hero-media { position: absolute; inset: 0; z-index: -2; }
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 42% 40%;
+  /* Gradación: casi sin color, contraste alto; el rojo lo pone el velo. */
+  filter: grayscale(0.55) contrast(1.15) brightness(0.62);
+  transform: scale(1.16);
+  /* Parallax: el ratón la desplaza un poco y el scroll la baja más despacio que la página. */
+  translate: calc(var(--mx) * -14px) calc(var(--my) * -10px + var(--hp) * 22vh);
+  animation: hero-settle 2800ms var(--ease-out) var(--intro) forwards, hero-drift 26s ease-in-out calc(var(--intro) + 2800ms) infinite alternate;
+}
+
+@keyframes hero-settle { to { transform: scale(1.04); } }
+@keyframes hero-drift { from { transform: scale(1.04); } to { transform: scale(1.09) translate3d(-1.2%, -0.8%, 0); } }
+
+.hero-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(45% 55% at 82% 18%, rgb(224 0 0 / 0.26), transparent 70%),
+    radial-gradient(80% 70% at 50% 48%, transparent 0%, rgb(12 9 9 / 0.55) 70%, rgb(12 9 9 / 0.92) 100%),
+    linear-gradient(180deg, rgb(12 9 9 / 0.55) 0%, rgb(61 3 3 / 0.28) 45%, rgb(12 9 9 / 0.95) 100%);
+}
+
+/* Luz roja que sigue al puntero (como un foco sobre el sillón). */
+.hero-spot {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(460px circle at var(--sx, 50%) var(--sy, 40%), rgb(255 40 40 / 0.17), transparent 65%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 700ms var(--ease-out);
+}
+
+.hero.is-lit .hero-spot { opacity: 1; }
+
+/* "FAMILIA" gigante en contorno, detrás del titular (como "FRANKLIN" en la referencia). */
+.hero-outline {
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 50%;
+  margin: 0;
+  transform: translate(-50%, -52%);
+  translate: calc(var(--mx) * 26px) calc(var(--hp) * 16vh);
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(9rem, 31vw, 34rem);
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(242 235 231 / 0.1);
+  pointer-events: none;
+  user-select: none;
+}
+
+.hero-outline span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(14%);
+  animation: hero-outline-in 1600ms var(--ease-out) forwards;
+  animation-delay: calc(var(--intro) + 250ms + var(--oi) * 70ms);
+}
+
+@keyframes hero-outline-in { to { opacity: 1; transform: none; } }
+
+/* Al bajar, el texto sube y se apaga antes que la foto (--hp lo escribe src/lib/motion.ts). */
+.hero-center {
+  align-self: center;
+  justify-self: center;
+  width: 100%;
+  max-width: 1200px;
+  padding: 120px var(--gutter) 40px;
+  text-align: center;
+  translate: 0 calc(var(--hp) * -12vh);
+  opacity: calc(1 - var(--hp) * 1.5);
+}
+
+.hero-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 clamp(22px, 3vw, 34px);
+  font: 600 13px/1 var(--body);
+  letter-spacing: 0.62em;
+  text-indent: 0.62em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: hero-brand-in 1400ms var(--ease-out) calc(var(--intro) + 200ms) forwards;
+}
+
+@keyframes hero-brand-in { from { letter-spacing: 1em; } to { opacity: 1; } }
+
+.hero-brand-sub {
+  color: var(--bone-mute);
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+}
+
+.hero-title {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(2.1rem, 5.6vw, 5.4rem);
+  line-height: 1.08;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hero-line { display: block; }
+
+/* Cada palabra es una máscara; cada letra sube desde abajo, una detrás de otra. */
+.hw {
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.16em 0.03em 0.05em;
+  margin: -0.16em -0.03em -0.05em;
+  vertical-align: bottom;
+}
+
+.hc {
+  display: inline-block;
+  transform: translate3d(0, 112%, 0) rotate(5deg);
+  transform-origin: 0 100%;
+  animation: hero-char 1100ms var(--ease-out) forwards;
+  animation-delay: calc(var(--intro) + 380ms + var(--ci) * 24ms);
+}
+
+@keyframes hero-char { to { transform: none; } }
+
+.hero-title em { position: relative; display: inline-block; font-style: normal; color: var(--red-hot); }
+
+/* Subrayado rojo que se traza bajo "PLUS" cuando terminan de llegar las letras. */
+.hero-title em::after {
+  content: '';
+  position: absolute;
+  left: 0.04em;
+  right: 0.04em;
+  bottom: -0.02em;
+  height: 0.06em;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: hero-underline 900ms var(--ease-in-out) calc(var(--intro) + 1450ms) forwards;
+}
+
+@keyframes hero-underline { to { transform: scaleX(1); } }
+@keyframes hero-rise { to { transform: none; } }
+@keyframes hero-fade { to { opacity: 1; } }
+
+/* Sello giratorio "Réserver" (escritorio). */
+.hero-seal {
+  position: absolute;
+  right: var(--gutter);
+  bottom: calc(76px + clamp(24px, 4vh, 48px));
+  width: 136px;
+  height: 136px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--bone);
+  cursor: pointer;
+  opacity: 0;
+  animation: hero-fade 1200ms var(--ease-out) calc(var(--intro) + 1300ms) forwards;
+  transition: translate 450ms var(--ease-out);
+}
+
+.hero-seal > svg {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  animation: seal-spin 22s linear infinite;
+}
+
+.hero-seal text {
+  fill: currentColor;
+  font: 600 13.5px/1 var(--body);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.hero-seal-core {
+  grid-area: 1 / 1;
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--red);
+  color: var(--paper);
+  transition: transform 500ms var(--ease-out), background-color 300ms;
+}
+
+.hero-seal-core svg { width: 18px; height: 18px; transition: transform 500ms var(--ease-out); }
+.hero-seal:hover .hero-seal-core { transform: scale(1.12); background: var(--red-hot); }
+.hero-seal:hover .hero-seal-core svg { transform: rotate(45deg); }
+
+@keyframes seal-spin { to { transform: rotate(360deg); } }
+
+/* Barra inferior en tres columnas con filetes verticales */
+.hero-bottom {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  border-top: 1px solid var(--line);
+  /* Sigue el tema de la página (theme-page): en claro es una franja de papel bajo la foto. */
+  background: var(--ink);
+  transition: background-color 500ms var(--ease-out);
+  opacity: 0;
+  animation: hero-fade 1200ms var(--ease-out) calc(var(--intro) + 1000ms) forwards;
+}
+
+.hero-bottom-cell {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  padding: 26px var(--gutter);
+  color: var(--bone-dim);
+  font: 600 11.5px/1 var(--body);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+
+.hero-bottom-center {
+  padding-inline: clamp(36px, 7vw, 120px);
+  border-inline: 1px solid var(--line);
+}
+
+.hero-bottom-center .underline-link { color: var(--bone); font-size: 13px; }
+
+.hero-bottom-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Punto de estado: late en rojo cuando el salón está abierto. */
+.hero-dot {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--bone-mute);
+}
+
+.is-open .hero-dot { background: var(--red-hot); }
+
+.is-open .hero-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--red-hot);
+  animation: dot-ping 2.2s var(--ease-out) infinite;
+}
+
+@keyframes dot-ping { from { transform: scale(1); opacity: 0.9; } to { transform: scale(3.4); opacity: 0; } }
+
+@media (max-width: 1023px) {
+  .hero-bottom-cell { line-height: 1.5; letter-spacing: 0.18em; }
+  /* Tableta: sin la celda de la izquierda, el estado en una línea. */
+  .hero-bottom { grid-template-columns: auto 1fr; }
+  .hero-bottom-left { display: none; }
+  .hero-bottom-center { border-left: 0; }
+  .hero-bottom-right { white-space: nowrap; }
+}
+
+@media (max-width: 899px) {
+  .hero-seal { display: none; }
+}
+
+@media (max-width: 767px) {
+  /* En móvil la cara queda arriba y el texto abajo, cerca del "Réserver". */
+  .hero-center { align-self: end; padding-top: 110px; padding-bottom: 44px; }
+  .hero-img { object-position: 62% 30%; }
+  /* Tamaño para que el titular parta como VOTRE STYLE / MÉRITE PLUS / QU’UN SIMPLE / RENDEZ-VOUS. */
+  .hero-title { font-size: clamp(2.5rem, 11.4vw, 3.4rem); letter-spacing: 0.01em; }
+  .hero-brand { letter-spacing: 0.42em; text-indent: 0.42em; }
+  .hero-bottom { grid-template-columns: 1fr; }
+  .hero-bottom-left, .hero-bottom-right { display: none; }
+  .hero-bottom-center { border-inline: 0; text-align: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-img { transform: scale(1.04); translate: none; }
+  .hc, .hero-title em::after { transform: none; }
+  .hero-outline, .hero-center { translate: none; opacity: 1; }
+  .hero-outline span, .hero-brand, .hero-bottom, .hero-seal { opacity: 1; transform: none; }
+  .hero-seal > svg { animation: none; }
+}

@@ -1,0 +1,82 @@
+/*
+  Tokens de La Familia. Paleta de la marca (brand-spec.md del export: primary-100…500) reducida a
+  lo que pide el cliente: rojo oscuro y rojo claro, sin dorado ni degradados de colores.
+
+  Dos temas: oscuro (por defecto) y claro, en <html data-theme>. Los nombres de los neutros se
+  mantienen (--ink = fondo, --bone = texto) y cambian de valor con el tema. Las "islas" que son
+  oscuras siempre (portada, bloque rojo, cierre, menú, fotos con texto encima) llevan la clase
+  .theme-dark, que vuelve a declarar los valores oscuros para todo lo que tienen dentro.
+*/
+:root {
+  /* Constantes: no cambian con el tema */
+  --paper: #f2ebe7;      /* texto sobre rojo o sobre foto, en los dos temas */
+  --night: #0c0909;
+  --blood: #3d0303;      /* rojo oscuro: fondos */
+  --wine: #980000;       /* primary-400 */
+  --red: #e00000;        /* primary-300: acción */
+  --red-hot: #ff2828;    /* primary-200 */
+  --red-ink: #cc0000;    /* rojo de fondo para texto pequeño en papel (4,97:1 con --paper) */
+  --blush: #fecdd0;      /* secondary-100 */
+
+  --display: 'Oswald Variable', 'Oswald', 'Arial Narrow', sans-serif;
+  --body: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
+
+  --wrap: 1360px;
+  --gutter: clamp(20px, 5vw, 64px);
+  --section-y: clamp(88px, 12vw, 168px);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Tema oscuro: negros con un punto de rojo (no el negro azulado típico de plantilla) */
+:root,
+:root[data-theme='dark'],
+.theme-dark {
+  color-scheme: dark;
+  --ink: #0c0909;
+  --ink-2: #130d0d;
+  --ink-3: #1c1313;
+  --bone: #f2ebe7;
+  --bone-dim: rgb(242 235 231 / 0.68);
+  --bone-mute: rgb(242 235 231 / 0.55);
+  --line: rgb(242 235 231 / 0.12);
+  --line-strong: rgb(242 235 231 / 0.28);
+  --red-light: #ff7070;  /* primary-100: rojo claro para texto */
+  --alert: #fecdd0;
+  --bar: rgb(12 9 9 / 0.88);
+  --tint: rgb(152 0 0 / 0.3);   /* fondo de lo seleccionado */
+  --field-line: rgb(242 235 231 / 0.42);  /* borde de campos de formulario (≥ 3:1) */
+  --grain: 0.06;
+}
+
+/* Tema claro: papel cálido (no blanco puro) y tinta casi negra con el mismo punto de rojo.
+   .theme-page = vuelve al tema de la página dentro de una isla oscura. */
+:root[data-theme='light'],
+:root[data-theme='light'] .theme-page {
+  color-scheme: light;
+  --ink: #f4eeea;
+  --ink-2: #ece3de;
+  --ink-3: #e1d5ce;
+  --bone: #1b1111;
+  --bone-dim: rgb(27 17 17 / 0.76);
+  --bone-mute: rgb(27 17 17 / 0.64);
+  --line: rgb(27 17 17 / 0.13);
+  --line-strong: rgb(27 17 17 / 0.3);
+  --red-light: #b80000;  /* el rojo claro no se lee sobre papel: rojo vino */
+  --alert: #8a0000;
+  --bar: rgb(244 238 234 / 0.9);
+  --tint: rgb(224 0 0 / 0.07);
+  --field-line: rgb(27 17 17 / 0.56);
+  --grain: 0.045;
+}
+
+/* C18: al cambiar de tema se cortan las transiciones de color, para que el círculo del
+   View Transition muestre ya el tema nuevo (no elementos a medio fundido). */
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after { transition: none !important; }
+
+/* `color` se hereda ya calculado: cada isla tiene que volver a pedir el texto de su tema. */
+.theme-dark,
+.theme-page { color: var(--bone); }

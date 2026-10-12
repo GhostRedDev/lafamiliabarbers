@@ -1,0 +1,109 @@
+.gallery { --wipe-bg: var(--ink-2); padding: var(--section-y) 0; background: var(--ink-2); border-top: 1px solid var(--line); }
+
+.gallery-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px 64px;
+  margin-bottom: clamp(40px, 5vw, 72px);
+}
+
+.gallery-head .title { margin-top: 20px; }
+.gallery-head .lead { max-width: 40ch; margin: 0; }
+
+/* Mosaico de 12 columnas: retrato alto a la izquierda, panorámica arriba, el resto encajado. */
+.mosaic {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: clamp(56px, 6.4vw, 92px);
+  gap: clamp(8px, 1vw, 14px);
+}
+
+.g-a { grid-area: 1 / 1 / 7 / 5; }
+.g-b { grid-area: 1 / 5 / 5 / 13; }
+.g-c { grid-area: 5 / 5 / 12 / 8; }
+.g-d { grid-area: 5 / 8 / 8 / 13; }
+.g-e { grid-area: 7 / 1 / 12 / 5; }
+.g-f { grid-area: 8 / 8 / 12 / 13; }
+
+.tile { position: relative; overflow: hidden; background: var(--ink-3); }
+
+.tile img {
+  width: 100%;
+  /* Más alta que la celda para el parallax (--p, src/lib/motion.ts). */
+  height: calc(100% + 72px);
+  margin-top: -36px;
+  translate: 0 calc(var(--p, 0) * -48px);
+  object-fit: cover;
+  filter: grayscale(0.5) contrast(1.08) brightness(0.82);
+  transform: scale(1.03);
+  transition: filter 700ms var(--ease-out), transform 1200ms var(--ease-out);
+}
+
+.g-a img { object-position: 50% 30%; }
+
+.tile:hover img { filter: grayscale(0) contrast(1.05) brightness(0.95); transform: scale(1.07); }
+
+/* Tinte rojo muy bajo desde abajo, para atar las fotos a la paleta. */
+.tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* Velo oscuro fijo detrás de la etiqueta (contraste ≥ 4.5:1 también al pasar el ratón) y el
+     tinte rojo encima. */
+  background: linear-gradient(to top, rgb(12 9 9 / 0.85) 28px, rgb(61 3 3 / 0.5) 80px, transparent 45%);
+  pointer-events: none;
+}
+
+/* Foco de teclado en el <li>: el botón queda recortado por overflow: hidden. */
+.tile:has(.tile-open:focus-visible) { outline: 2px solid var(--red); outline-offset: 3px; }
+.tile-open:focus-visible { outline: none; }
+
+.tile-tag {
+  font-variant-numeric: tabular-nums;
+  position: absolute;
+  z-index: 1;
+  left: 16px;
+  bottom: 14px;
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  font: 600 11px/1 var(--body);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.tile-tag span { color: var(--red-light); }
+
+.gallery-more { margin: 40px 0 0; text-align: center; }
+
+@media (max-width: 1023px) {
+  .mosaic { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: clamp(150px, 26vw, 240px); }
+  .g-a { grid-area: span 2 / span 1; }
+  .g-b { grid-area: span 1 / span 1; }
+  .g-c { grid-area: span 2 / span 1; }
+  .g-d { grid-area: span 1 / span 1; }
+  .g-e { grid-area: span 2 / span 1; }
+  .g-f { grid-area: span 2 / span 1; }
+}
+
+/* Móvil: tira horizontal que se desliza (la siguiente foto asoma por el borde) en vez de una
+   columna de 2 400 px. */
+@media (max-width: 599px) {
+  .mosaic {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 10px;
+    margin-inline: calc(-1 * var(--gutter));
+    padding: 6px var(--gutter);
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+  .mosaic::-webkit-scrollbar { display: none; }
+  .tile { flex: 0 0 82%; aspect-ratio: 4 / 5; scroll-snap-align: start; }
+}

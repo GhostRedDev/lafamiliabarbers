@@ -1,0 +1,14 @@
+{
+  "name": "lafamilia-api",
+  "private": true,
+  "description": "Conector de reservas de La Familia con la API de socios de Connek (sin dependencias).",
+  "type": "commonjs",
+  "main": "server.cjs",
+  "scripts": {
+    "start": "node server.cjs",
+    "test": "node --test --test-force-exit"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

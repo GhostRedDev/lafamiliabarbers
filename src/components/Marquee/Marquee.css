@@ -1,0 +1,33 @@
+.marquee { overflow: hidden; white-space: nowrap; }
+.marquee-track { display: inline-flex; will-change: transform; }
+.marquee-group { display: inline-flex; flex: none; align-items: center; }
+
+/* Cinta grande entre secciones: servicios en Oswald, alternando lleno y contorno. */
+.marquee--big {
+  padding: clamp(26px, 4vw, 48px) 0;
+  background: var(--ink);
+  border-block: 1px solid var(--line);
+}
+
+.marquee--big .marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(22px, 3vw, 44px);
+  padding-right: clamp(22px, 3vw, 44px);
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(3.2rem, 9vw, 8.5rem);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.marquee--big .marquee-item:nth-child(even) span { color: transparent; -webkit-text-stroke: 1.2px var(--bone); }
+
+.marquee--big .marquee-item::after {
+  content: '';
+  width: 0.16em;
+  height: 0.16em;
+  background: var(--red);
+  transform: rotate(45deg);
+}

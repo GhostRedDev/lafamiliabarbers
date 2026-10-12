@@ -1,0 +1,107 @@
+.manifesto { padding: var(--section-y) 0; background: var(--ink); }
+
+.manifesto-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(40px, 7vw, 120px);
+  align-items: start;
+}
+
+.manifesto-media {
+  position: sticky;
+  top: 110px;
+  margin: 0;
+}
+
+.manifesto-photo { overflow: hidden; }
+
+.manifesto-media img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5.6;
+  object-fit: cover;
+  object-position: 50% 30%;
+  filter: contrast(1.06) saturate(0.92);
+}
+
+.manifesto-media figcaption {
+  margin-top: 14px;
+  color: var(--bone-mute);
+  font: 600 11px/1 var(--body);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+
+.manifesto-copy { display: flex; flex-direction: column; gap: clamp(22px, 3vw, 32px); padding-top: 8px; }
+
+.manifesto-text {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 2.6vw, 2.35rem);
+  line-height: 1.22;
+  letter-spacing: 0.005em;
+  text-wrap: pretty;
+}
+
+.manifesto-text .is-em { color: var(--red-light); }
+
+/* Cada palabra pasa de apagada a encendida según avanza el párrafo por la pantalla. Sin
+   movimiento (--p sin definir → -1) todas quedan encendidas. */
+.mw {
+  opacity: clamp(0.16, calc((0.62 - var(--p, -1)) / 0.85 * var(--wn) - var(--wi)), 1);
+  transition: opacity 250ms linear;
+}
+
+.manifesto-title { margin-top: clamp(24px, 5vw, 64px); font-size: clamp(2.4rem, 5vw, 4.6rem); }
+
+/* Los cinco valores como índice de una columna (número · nombre · texto), con el mismo ritmo
+   que la carta de servicios. */
+.values {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.value {
+  display: grid;
+  grid-template-columns: 2.4em minmax(0, 0.85fr) minmax(0, 1.15fr);
+  align-items: baseline;
+  column-gap: 18px;
+  padding: 20px 0 22px;
+  border-top: 1px solid var(--line);
+}
+
+.value-num {
+  color: var(--red-light);
+  font: 600 12px/1.9 var(--body);
+  letter-spacing: 0.16em;
+  font-variant-numeric: tabular-nums;
+}
+
+.value-name {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.value-text { margin: 0; color: var(--bone-dim); font-size: 0.97rem; line-height: 1.6; }
+
+@media (max-width: 899px) {
+  .manifesto-grid { grid-template-columns: 1fr; }
+  .manifesto-media { position: relative; top: auto; max-width: 460px; }
+  .value { grid-template-columns: 2.4em minmax(0, 1fr); }
+  .value-num { grid-row: span 2; }
+  .value-name { margin: 0 0 6px; }
+}
+
+/* Tableta: la foto (retrato) a lo ancho y apaisada, sin hueco al lado. */
+@media (min-width: 768px) and (max-width: 899px) {
+  .manifesto-media { max-width: none; }
+  .manifesto-media img { aspect-ratio: 16 / 10; object-position: 50% 30%; }
+}
