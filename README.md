@@ -48,7 +48,7 @@ node --test server/server.test.cjs
 
 Variables (Vercel → Settings → Environment Variables, o `server/.env`; ver `server/.env.example`):
 `CONNEK_API_KEY_ID`, `CONNEK_API_KEY_SECRET`, `CONNEK_API_BASE_URL`, `CONNEK_GATEWAY_KEY`,
-`CONNEK_SERVICES` (`coupe:ID,degrade:ID,rituel:ID`), `CONNEK_SERVICE_ID`, `CONNEK_BOOKING_MINUTES`,
+`CONNEK_SERVICES` (`coupe:ID,coupe-barbe:ID,…`; claves en `src/content/services.ts`), `CONNEK_SERVICE_ID`, `CONNEK_BOOKING_MINUTES`,
 `CONNEK_TZ`, `CONNEK_MIN_LEAD_MINUTES`, `CONNEK_DEFAULT_COUNTRY_CODE`, `RESEND_API_KEY`,
 `FROM_EMAIL`, `BUSINESS_NOTIFY_EMAIL`, `RESEND_MODE`.
 

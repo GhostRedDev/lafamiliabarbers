@@ -25,24 +25,38 @@
   align-items: start;
 }
 
-.menu { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--line); }
+.menu { display: grid; gap: clamp(36px, 5vw, 56px); }
 
-.menu-row {
+.menu-cat {
   position: relative;
-  display: grid;
-  grid-template-columns: 56px minmax(0, 1fr) auto auto;
-  align-items: center;
-  gap: clamp(16px, 3vw, 40px);
-  padding: clamp(26px, 3.4vw, 40px) 0;
-  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin: 0;
+  padding-bottom: 16px;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  border-bottom: 1px solid var(--line-strong);
 }
 
-/* Filete rojo que crece en la fila activa. */
-.menu-row::before {
+.menu-cat span {
+  font-variant-numeric: tabular-nums;
+  color: var(--bone-mute);
+  font: 600 12px/1 var(--body);
+  letter-spacing: 0.16em;
+  transition: color 300ms;
+}
+
+/* Filete rojo que crece bajo la categoría activa. */
+.menu-cat::after {
   content: "";
   position: absolute;
   left: 0;
-  top: -1px;
+  bottom: -1px;
   height: 1px;
   width: 100%;
   background: var(--red);
@@ -51,71 +65,76 @@
   transition: transform 700ms var(--ease-out);
 }
 
-.menu-row.is-active::before { transform: scaleX(1); }
+.menu-group.is-active .menu-cat::after { transform: scaleX(1); }
+.menu-group.is-active .menu-cat span { color: var(--red-light); }
 
-.menu-row .menu-num {
-  font-variant-numeric: tabular-nums;
-  align-self: start;
-  padding-top: 0.7em;
-  color: var(--bone-mute);
-  font: 600 12px/1 var(--body);
-  letter-spacing: 0.16em;
-  transition: color 300ms;
+.menu-list { list-style: none; margin: 0; padding: 0; }
+
+.menu-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px clamp(16px, 2.4vw, 32px);
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
 }
-
-.menu-row.is-active .menu-num { color: var(--red-light); }
 
 .menu-name {
-  margin: 0 0 10px;
+  margin: 0;
   font-family: var(--display);
   font-weight: 500;
-  font-size: clamp(1.9rem, 3.6vw, 3.1rem);
-  line-height: 1;
+  font-size: clamp(1.2rem, 1.8vw, 1.5rem);
+  line-height: 1.15;
   text-transform: uppercase;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
 }
 
-.menu-desc { margin: 0; max-width: 46ch; color: var(--bone-dim); font-size: 0.97rem; line-height: 1.6; }
-
-.menu-meta { margin: 0; display: grid; justify-items: end; gap: 8px; white-space: nowrap; }
+.menu-name small {
+  display: block;
+  margin-top: 6px;
+  color: var(--bone-mute);
+  font: 600 11px/1.3 var(--body);
+  letter-spacing: 0.16em;
+}
 
 .menu-price {
+  margin: 0;
   font-variant-numeric: tabular-nums;
   font-family: var(--display);
   font-weight: 500;
-  font-size: clamp(1.7rem, 2.6vw, 2.3rem);
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
   line-height: 1;
+  white-space: nowrap;
 }
 
-.menu-price small { font: 600 11px/1 var(--body); letter-spacing: 0.18em; color: var(--bone-mute); }
+.menu-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
 
-.menu-time {
-  color: var(--bone-mute);
-  font: 600 11px/1 var(--body);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
-.menu-book {
+.menu-book, .menu-combo {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  height: 46px;
-  padding: 0 18px;
+  height: 40px;
+  padding: 0 16px;
   border: 0;
   background: transparent;
   color: var(--bone);
   box-shadow: inset 0 0 0 1px var(--line-strong);
-  font: 700 11.5px/1 var(--body);
-  letter-spacing: 0.2em;
+  font: 700 11px/1 var(--body);
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  white-space: nowrap;
   cursor: pointer;
-  transition: background 250ms, box-shadow 250ms;
+  transition: background 250ms, box-shadow 250ms, color 250ms;
 }
 
+.menu-combo { color: var(--bone-dim); letter-spacing: 0.12em; }
+.menu-combo:hover { color: var(--bone); box-shadow: inset 0 0 0 1px var(--red); }
+
 .menu-book svg { width: 14px; height: 14px; transition: transform 400ms var(--ease-out); }
-.menu-book:hover, .menu-row.is-active .menu-book { background: var(--red-ink); color: var(--paper); box-shadow: none; }
+.menu-book:hover { background: var(--red-ink); color: var(--paper); box-shadow: none; }
 .menu-book:hover svg { transform: translateX(3px); }
+
+.menu-foot { margin: 0; color: var(--bone-mute); font-size: 0.85rem; }
 
 .services-photo { position: sticky; top: 110px; margin: 0; display: grid; }
 
@@ -155,15 +174,16 @@
 @media (max-width: 1023px) {
   .services-body { grid-template-columns: 1fr; }
   .services-photo { display: none; }
-  /* Sin foto al lado (y sin hover en táctil) la fila activa parecería una recomendación. */
-  .menu-row::before { display: none; }
-  .menu-row.is-active .menu-num { color: var(--bone-mute); }
-  .menu-row.is-active .menu-book { background: transparent; color: var(--bone); box-shadow: inset 0 0 0 1px var(--line-strong); }
+  /* Sin foto al lado (y sin hover en táctil) la categoría activa parecería una recomendación. */
+  .menu-cat::after { display: none; }
+  .menu-group.is-active .menu-cat span { color: var(--bone-mute); }
 }
 
 @media (max-width: 767px) {
   .services-head { grid-template-columns: 1fr; grid-template-areas: "kicker" "title" "lead"; }
-  .menu-row { grid-template-columns: 36px minmax(0, 1fr); row-gap: 18px; }
-  .menu-meta { grid-column: 2; display: flex; align-items: baseline; gap: 16px; }
-  .menu-book { grid-column: 2; justify-self: start; }
+  /* Móvil: nombre, precio y "Réserver" en una sola línea; el combo "+ barbe" debajo. */
+  .menu-row { grid-template-columns: minmax(0, 1fr) auto auto; gap: 10px 14px; padding: 14px 0; }
+  .menu-actions { display: contents; }
+  .menu-book { grid-area: 1 / 3; height: 40px; padding: 0 12px; gap: 8px; }
+  .menu-combo { grid-area: 2 / 1 / 3 / -1; justify-self: start; height: 34px; padding: 0 12px; }
 }

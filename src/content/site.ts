@@ -25,11 +25,11 @@ export const hours: ReadonlyArray<{ days: string; time: string; closed?: boolean
 ];
 
 /**
- * Redes y contacto: vacíos hasta tener los reales (en el export eran href="#"). Lo que está vacío
+ * Redes y contacto (Instagram: @lafamiliabarbershop, del flyer de precios). Lo que está vacío
  * no se muestra. WhatsApp: solo dígitos con indicativo (p. ej. 15145550100).
  */
 export const links = {
-  instagram: '',
+  instagram: 'https://www.instagram.com/lafamiliabarbershop/',
   whatsapp: '',
   googleReview: '',
 };
