@@ -3,19 +3,19 @@ import beardFade from '../../assets/photos/beard-fade-800.webp';
 import beardTrim from '../../assets/photos/beard-trim.webp';
 import blonde from '../../assets/photos/blonde-crop-800.webp';
 import braidsDuo from '../../assets/photos/braids-duo-800.webp';
-import braidsSide from '../../assets/photos/braids-side-800.webp';
 import braidsTop from '../../assets/photos/braids-top-800.webp';
 import clientFade from '../../assets/photos/client-fade-800.webp';
 import designBarber from '../../assets/photos/design-barber-800.webp';
 import design from '../../assets/photos/design-flames-800.webp';
 import towel from '../../assets/photos/hot-towel.webp';
+import twistRed from '../../assets/photos/twist-red-800.webp';
 import { categories, comboOf, priceLabel, services } from '../../content/services';
 
 // Foto de cada servicio (clave de services.ts); los combos "+ barbe" usan la de su base.
 const PHOTOS: Record<string, string> = {
   coupe: blonde, enfant: clientFade, degrade: beardFade, rasage: designBarber,
   barbe: beardTrim, serviette: towel, facial: towel, masque: towel, cire: beardFade, spray: design,
-  tresses: braidsTop, twist: braidsSide, locs: braidsDuo,
+  tresses: braidsTop, twist: twistRed, locs: braidsDuo,
 };
 
 // Servicios con fila propia (sin los combos), con su índice en `services` para reservar.
