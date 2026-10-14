@@ -20,10 +20,15 @@ import designBarberSm from '../../assets/photos/design-barber-800.webp';
 import designLg from '../../assets/photos/design-flames-1500.webp';
 import designSm from '../../assets/photos/design-flames-800.webp';
 import hotTowel from '../../assets/photos/hot-towel.webp';
+import twistRedLg from '../../assets/photos/twist-red-1500.webp';
+import twistRedSm from '../../assets/photos/twist-red-800.webp';
+import twistTopLg from '../../assets/photos/twist-top-1500.webp';
+import twistTopSm from '../../assets/photos/twist-top-800.webp';
 import { links } from '../../content/site';
 import { Lightbox } from './Lightbox';
 
-// Fotos reales del salón. Dos bloques de seis en espejo (g-a…g-f y g-g…g-l, ver Gallery.css);
+// Fotos reales del salón. Dos bloques de seis en espejo (g-a…g-f y g-g…g-l) y un par al final
+// (g-m, g-n), ver Gallery.css;
 // `pos` = encuadre dentro de la celda.
 const SHOTS = [
   { cls: 'g-a', sm: designSm, lg: designLg, w: 1500, h: 2000, pos: '50% 40%', alt: 'Coupe avec motif tracé au rasoir, vue de dos', tag: 'Design' },
@@ -38,6 +43,8 @@ const SHOTS = [
   { cls: 'g-j', sm: braidsBackSm, lg: braidsBackLg, w: 1500, h: 2000, pos: '50% 45%', alt: 'Nattes collées vues de dos', tag: 'Nattes' },
   { cls: 'g-k', sm: braidsFrontSm, lg: braidsFrontLg, w: 1500, h: 2000, pos: '50% 40%', alt: 'Tresses et contours nets', tag: 'Contours' },
   { cls: 'g-l', sm: beardFadeSm, lg: beardFadeLg, w: 1500, h: 2000, pos: '50% 40%', alt: 'Barbe taillée et dégradé court', tag: 'Barbe' },
+  { cls: 'g-m', sm: twistRedSm, lg: twistRedLg, w: 1500, h: 2000, pos: '50% 85%', alt: 'Twists rouges et noirs, vue de face', tag: 'Twist' },
+  { cls: 'g-n', sm: twistTopSm, lg: twistTopLg, w: 1500, h: 2000, pos: '50% 70%', alt: 'Twists rouges vus du dessus', tag: 'Couleur' },
 ];
 
 export function Gallery() {
