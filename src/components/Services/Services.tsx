@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from 'react';
+import { useState } from 'react';
 import beardFade from '../../assets/photos/beard-fade-800.webp';
 import beardTrim from '../../assets/photos/beard-trim.webp';
 import blonde from '../../assets/photos/blonde-crop-800.webp';
@@ -68,8 +68,6 @@ export function Services({ onBook }: { onBook: (svc: number) => void }) {
                       <li
                         key={s.key}
                         className={`menu-row${active === r ? ' is-active' : ''}`}
-                        data-reveal=""
-                        style={{ '--delay': `${(r % 4) * 60}ms` } as CSSProperties}
                         onMouseEnter={() => setActive(r)}
                         onFocus={() => setActive(r)}
                       >

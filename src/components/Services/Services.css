@@ -106,6 +106,7 @@
   line-height: 1.15;
   text-transform: uppercase;
   letter-spacing: 0.02em;
+  overflow-wrap: anywhere;
 }
 
 .menu-note {
@@ -227,4 +228,10 @@
   /* Móvil: nombre (con su promo debajo), precio y "Réserver" en una sola fila. */
   .menu-row { gap: 10px 14px; padding: 14px 0; }
   .menu-book { height: 40px; padding: 0 12px; gap: 8px; }
+}
+
+@media (max-width: 420px) {
+  .menu-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .menu-book { grid-column: 1 / -1; justify-self: start; }
+  .menu-row.is-focus .menu-main { transform: none; }
 }
