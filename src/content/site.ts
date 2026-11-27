@@ -1,17 +1,15 @@
 // Datos del negocio. Fuente: export del cliente (La-Familia-Barber-V2.zip, brand-spec.md) y el
-// conector de Punta Cana Barbers (mismo salón de Laval). Lo marcado "por confirmar" no lo ha
+// conector de Punta Cana Barbers (mismo salón). Lo marcado "por confirmar" no lo ha
 // validado el salón todavía.
 
 export const BRAND = 'La Familia';
 export const BRAND_FULL = 'La Familia — Salon de barbier';
 
 export const address = {
-  // El pie del export y el conector de Punta Cana dicen 225 #9; la sección "Localisation" del
-  // export decía 255 sin unidad. Se usa la del conector (la que ya recibe a los clientes): confirmar.
-  // Espacio insecable: el «9» nunca queda solo en una línea.
-  street: '225 Boul. de la Concorde O, local\u00a09',
-  city: 'Laval (QC) H7N 5T1',
-  mapsQuery: '225 Boulevard de la Concorde Ouest, Laval, QC H7N 5T1',
+  // Confirmada con la ficha de Google Maps del salón (2026-11-26).
+  street: '3981 Boul. Saint-Laurent',
+  city: 'Montréal (QC) H2W 1Y4',
+  mapsQuery: 'La Familia Barbershop, 3981 Boulevard Saint-Laurent, Montréal, QC H2W 1Y4',
 };
 
 export const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address.mapsQuery)}`;
@@ -46,12 +44,12 @@ const SCHEDULE: ReadonlyArray<readonly [number, number] | null> = [
 ];
 const DAY_NAMES = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
 
-/** Hora actual en Laval (America/Toronto), sin depender de la zona del visitante. */
+/** Hora actual en Montreal (America/Toronto), sin depender de la zona del visitante. */
 export function lavalNow(): Date {
   return new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Toronto' }));
 }
 
-/** "Ouvert · jusqu'à 19 h" / "Fermé · ouvre demain à 10 h", calculado con la hora de Laval. */
+/** "Ouvert · jusqu'à 19 h" / "Fermé · ouvre demain à 10 h", calculado con la hora de Montreal. */
 export function openStatus(now: Date = lavalNow()): { open: boolean; label: string } {
   const dow = now.getDay();
   const h = now.getHours() + now.getMinutes() / 60;

@@ -25,7 +25,7 @@ const range = (from: number, to: number) => Array.from({ length: to - from + 1 }
 const WEEKDAY_TIMES = range(10, 18);
 const SATURDAY_TIMES = range(9, 16);
 
-/** Horas de referencia de un día; las de hoy, solo a partir de dentro de 30 min (hora de Laval). */
+/** Horas de referencia de un día; las de hoy, solo a partir de dentro de 30 min (hora de Montreal). */
 function referenceTimes(d: DayOption): string[] {
   const wd = new Date(`${d.iso}T12:00:00`).getDay();
   const list = wd === 0 ? [] : wd === 6 ? SATURDAY_TIMES : WEEKDAY_TIMES;

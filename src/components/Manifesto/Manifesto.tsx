@@ -26,7 +26,7 @@ export function Manifesto() {
             <img src={owner} alt="Le fondateur de La Familia taillant la barbe d’un client au salon" width="808" height="540" loading="lazy" decoding="async" />
             <span className="manifesto-badge">Le fondateur</span>
           </div>
-          <figcaption><span>La Familia</span> · Fondé en 2020 · Laval</figcaption>
+          <figcaption><span>La Familia</span> · Fondé en 2020 · Montréal</figcaption>
         </figure>
 
         <div className="manifesto-copy">

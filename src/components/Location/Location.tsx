@@ -1,6 +1,6 @@
 import { address, hours, links, mapsEmbed, mapsLink, whatsappHref } from '../../content/site';
 
-/** Índice de `hours` que corresponde a hoy en Laval (lun–vie, sáb, dom). */
+/** Índice de `hours` que corresponde a hoy en Montreal (lun–vie, sáb, dom). */
 function todayIndex(): number {
   const dow = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Toronto' })).getDay();
   return dow === 0 ? 2 : dow === 6 ? 1 : 0;
@@ -16,7 +16,7 @@ export function Location({ onBook }: { onBook: () => void }) {
         <div className="location-info">
           <p className="kicker" data-reveal="">Nous trouver</p>
           <h2 className="title" id="location-title" data-reveal="">
-            On se retrouve <em>à Laval.</em>
+            On se retrouve <em>à Montréal.</em>
           </h2>
 
           <address className="location-address" data-reveal="">

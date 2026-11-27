@@ -43,7 +43,7 @@ function Title() {
   );
 }
 
-/** Estado del salón en vivo (hora de Laval), refrescado cada minuto. */
+/** Estado del salón en vivo (hora de Montreal), refrescado cada minuto. */
 function useOpenStatus() {
   const [s, setS] = useState(openStatus);
   useEffect(() => {
@@ -126,7 +126,7 @@ export function Hero({ onBook }: { onBook: () => void }) {
       <div className="hero-center">
         <p className="hero-brand">
           <span>La Familia</span>
-          <span className="hero-brand-sub">Salon de barbier · Laval</span>
+          <span className="hero-brand-sub">Salon de barbier · Montréal</span>
         </p>
         <Title />
       </div>

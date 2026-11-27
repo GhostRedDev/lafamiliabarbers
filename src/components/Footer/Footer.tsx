@@ -16,7 +16,7 @@ export function Footer() {
           <a href="#top" className="footer-logo" aria-label="La Familia — retour en haut">
             <img src={logo} alt="" width="72" height="72" loading="lazy" />
           </a>
-          <p>Un salon de barbier premium à Laval — coupes précises, rasage traditionnel et ambiance urbaine et raffinée.</p>
+          <p>Un salon de barbier premium à Montréal — coupes précises, rasage traditionnel et ambiance urbaine et raffinée.</p>
         </div>
 
         <div className="footer-col">

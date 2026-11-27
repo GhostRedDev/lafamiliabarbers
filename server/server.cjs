@@ -1,4 +1,4 @@
-// Conector de reservas de La Familia — Salon de Barbier (Laval) con la API de socios de Connek.
+// Conector de reservas de La Familia — Salon de Barbier (Montréal) con la API de socios de Connek.
 // Copia del de puntacanabarbers.ca (mismo mecanismo, ver Jorge/puntacanabarbers/server), con la
 // marca y los correos en francés.
 //
@@ -240,7 +240,7 @@ async function resendBackup({ first, email, phone, svc, detail }) {
     `<p style="font-family:sans-serif;font-size:14px">Bonjour ${esc(first)}, merci d’avoir réservé chez <b>La Familia Barber</b>. Nous vous écrivons sous peu pour confirmer l’heure.</p>` +
     `<table style="font-family:sans-serif;font-size:14px;border-collapse:collapse">` +
     row("Service", svc || "—") + row("Détail", detail) +
-    `</table><p style="font-family:sans-serif;font-size:13px">225 Boul. de la Concorde O #9, Laval (QC) H7N 5T1.</p>`;
+    `</table><p style="font-family:sans-serif;font-size:13px">3981 Boul. Saint-Laurent, Montréal (QC) H2W 1Y4.</p>`;
   if (BUSINESS_NOTIFY_EMAIL) {
     try {
       await sendViaResend({ to: BUSINESS_NOTIFY_EMAIL, subject: `Nouvelle réservation — ${first}${svc ? " · " + svc : ""}`, html: businessHtml, replyTo: email });

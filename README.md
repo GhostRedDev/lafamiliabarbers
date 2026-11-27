@@ -1,4 +1,4 @@
-# La Familia — Salon de barbier (Laval)
+# La Familia — Salon de barbier (Montréal)
 
 Rediseño del sitio de La Familia Barber (export original en `_export-original/`). React 18 + Vite +
 TypeScript, en francés, estilo oscuro rojo (rojo oscuro / rojo claro). Reservas con el mismo
@@ -54,8 +54,6 @@ Variables (Vercel → Settings → Environment Variables, o `server/.env`; ver `
 
 ## Pendiente del cliente
 
-- Confirmar dirección: el export trae "255 Boulevard de la Concorde Ouest" y el conector de Punta
-  Cana "225 … #9, H7N 5T1" (se usa la segunda).
 - Confirmar horario (el export lo marcaba "à confirmer").
 - Enlaces de Instagram, WhatsApp y reseña de Google (`src/content/site.ts`; vacíos = ocultos).
 - Equipo y servicios dados de alta en Connek (IDs para `CONNEK_SERVICES`).
