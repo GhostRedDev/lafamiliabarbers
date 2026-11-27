@@ -3,13 +3,17 @@
 // CONNEK_SERVICE_ID. Las variantes «+ barbe» son servicios aparte (`combo`, justo después de su
 // servicio base): en la carta van en la misma fila que la base y en la reserva se eligen solas.
 
-export type CategoryId = 'coupes' | 'barbe' | 'tresses';
+export type CategoryId = string;
 
 export interface Service {
+  /** Id del servicio en Connek (servicios en vivo) o clave del flyer (respaldo). */
   key: string;
+  /** Foto que el dueño subió en Connek, si hay. */
+  image?: string | null;
   /** Tal cual el flyer, incluidas las aclaraciones entre paréntesis. */
   name: string;
-  price: number;
+  /** null = sin precio cargado en Connek. */
+  price: number | null;
   category: CategoryId;
   /** Precio con "+" detrás (70$+): depende del largo. */
   plus?: boolean;
@@ -20,7 +24,8 @@ export interface Service {
   featured?: boolean;
 }
 
-export const categories: ReadonlyArray<{ id: CategoryId; label: string }> = [
+export type Category = { id: CategoryId; label: string };
+export const categories: ReadonlyArray<Category> = [
   { id: 'coupes', label: 'Coupes' },
   { id: 'barbe', label: 'Barbe & soins' },
   { id: 'tresses', label: 'Tresses & locs' },
@@ -48,7 +53,8 @@ export const services: readonly Service[] = [
 ];
 
 /** Precio como en el flyer: 35$, 70$+. */
-export const priceLabel = (s: Pick<Service, 'price' | 'plus'>) => `${s.price}$${s.plus ? '+' : ''}`;
+export const priceLabel = (s: Pick<Service, 'price' | 'plus'>) =>
+  s.price == null ? '' : `${Number.isInteger(s.price) ? s.price : s.price.toFixed(2)}${s.plus ? '+' : ''}`;
 
 /** Índice de la variante «+ barbe» del servicio `i`, o -1 si no tiene. */
-export const comboOf = (i: number) => (services[i + 1]?.combo ? i + 1 : -1);
+export const comboOf = (i: number, list: readonly Service[] = services) => (list[i + 1]?.combo ? i + 1 : -1);

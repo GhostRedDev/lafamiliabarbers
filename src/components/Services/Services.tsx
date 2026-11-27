@@ -9,7 +9,8 @@ import designBarber from '../../assets/photos/design-barber-800.webp';
 import design from '../../assets/photos/design-flames-800.webp';
 import towel from '../../assets/photos/hot-towel.webp';
 import twistRed from '../../assets/photos/twist-red-800.webp';
-import { categories, comboOf, priceLabel, services } from '../../content/services';
+import { useServices } from '../../content/liveServices';
+import { comboOf, priceLabel, type Service } from '../../content/services';
 
 // Foto de cada servicio (clave de services.ts); los combos "+ barbe" usan la de su base.
 const PHOTOS: Record<string, string> = {
@@ -18,8 +19,15 @@ const PHOTOS: Record<string, string> = {
   tresses: braidsTop, twist: twistRed, locs: braidsDuo,
 };
 
-// Servicios con fila propia (sin los combos), con su índice en `services` para reservar.
-const ROWS = services.map((s, i) => ({ s, i })).filter(({ s }) => !s.combo);
+// Foto por defecto según el nombre del servicio de Connek (si el dueño no subió una).
+const KEYWORDS: Array<[RegExp, string]> = [
+  [/tress|braid/i, braidsTop], [/twist/i, twistRed], [/loc/i, braidsDuo],
+  [/mask|masque|towel|serviette|facial|visage/i, towel], [/shave|rasage|razor/i, designBarber],
+  [/taper|fade|d[eé]grad|line|l-up|tchass/i, beardFade], [/scissor|ciseau/i, blonde],
+  [/student|[ée]tudiant|enfant|kid/i, clientFade], [/beard|barbe/i, beardTrim], [/spray|design/i, design],
+];
+const photoFor = (s: Service) =>
+  s.image || PHOTOS[s.key] || KEYWORDS.find(([re]) => re.test(s.name))?.[1] || blonde;
 
 const Arrow = () => (
   <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -32,8 +40,11 @@ const Arrow = () => (
  * "+ barbe" que reserva ese combo). En escritorio la foto del servicio activo acompaña a la lista.
  */
 export function Services({ onBook }: { onBook: (svc: number) => void }) {
+  const { services, categories } = useServices();
+  // Servicios con fila propia (sin los combos), con su índice en `services` para reservar.
+  const ROWS = services.map((s, i) => ({ s, i })).filter(({ s }) => !s.combo);
   const [active, setActive] = useState(0);
-  const current = ROWS[active].s;
+  const current = (ROWS[active] ?? ROWS[0]).s;
 
   return (
     <section className="services" id="services" aria-labelledby="services-title">
@@ -63,7 +74,7 @@ export function Services({ onBook }: { onBook: (svc: number) => void }) {
                 <ul className="menu-list">
                   {ROWS.map(({ s, i }, r) => {
                     if (s.category !== c.id) return null;
-                    const combo = comboOf(i);
+                    const combo = comboOf(i, services);
                     return (
                       <li
                         key={s.key}
@@ -100,7 +111,7 @@ export function Services({ onBook }: { onBook: (svc: number) => void }) {
             {ROWS.map(({ s }, r) => (
               <img
                 key={s.key}
-                src={PHOTOS[s.key]}
+                src={photoFor(s)}
                 alt=""
                 loading="lazy"
                 decoding="async"

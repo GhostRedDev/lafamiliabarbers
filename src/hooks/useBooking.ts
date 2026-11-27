@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { services } from '../content/services';
+import { useServices } from '../content/liveServices';
 
 /*
   Reserva con Connek — mismo flujo que Punta Cana Barbers (Jorge/puntacanabarbers):
@@ -47,6 +47,7 @@ function buildDates(): DayOption[] {
 }
 
 export function useBooking() {
+  const { services } = useServices();
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(0);
   const [service, setService] = useState<number | null>(null);
@@ -67,7 +68,15 @@ export function useBooking() {
   const [notice, setNotice] = useState<Notice>(null);
 
   const dates = useMemo(buildDates, []);
-  const svcKey = service !== null ? services[service].key : null;
+  // Si la carta de Connek llega con la reserva abierta, el índice elegido ya no vale: se vuelve a elegir.
+  const [catalogo, setCatalogo] = useState(services);
+  useEffect(() => {
+    if (catalogo === services) return;
+    setCatalogo(services);
+    setService(null);
+    setStep((s) => (s > 0 ? 0 : s));
+  }, [catalogo, services]);
+  const svcKey = service !== null ? services[service]?.key ?? null : null;
   const barbers = useMemo(() => (team.length ? [NO_PREFERENCE, ...team] : [NO_PREFERENCE]), [team]);
   const hasTeam = barbers.length > 1;
   const teamReady = svcKey !== null && teamFor === svcKey;
@@ -152,7 +161,7 @@ export function useBooking() {
           email: email.trim(),
           phone: phone.trim(),
           service: svcKey,
-          service_label: services[service].name,
+          service_label: services[service]?.name ?? '',
           staff_id: staffId,
           staff_name: staffId ? chosen.name : '',
           start_utc: slot?.start_utc || undefined,

@@ -1,7 +1,8 @@
 import { useEffect, useRef, type CSSProperties } from 'react';
 import logo from '../../assets/logo-la-familia.png';
 import { STEP_COUNT, type BookingState } from '../../hooks/useBooking';
-import { categories, priceLabel, services } from '../../content/services';
+import { useServices } from '../../content/liveServices';
+import { priceLabel } from '../../content/services';
 import { whatsappHref } from '../../content/site';
 
 const STEPS: ReadonlyArray<[string, string]> = [
@@ -26,6 +27,7 @@ const FOCUSABLE = 'button:not([disabled]), [href], input, [tabindex]:not([tabind
  * `useBooking`: equipo y horas vienen de Connek; aquí no hay datos inventados.
  */
 export function BookingModal({ b }: { b: BookingState }) {
+  const { services, categories } = useServices();
   const panelRef = useRef<HTMLDivElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
   const { open, setOpen, step } = b;
@@ -67,7 +69,7 @@ export function BookingModal({ b }: { b: BookingState }) {
 
   if (!open) return null;
 
-  const svc = b.service !== null ? services[b.service] : null;
+  const svc = b.service !== null ? services[b.service] ?? null : null;
   const wa = whatsappHref(
     `Bonjour La Familia, j’aimerais réserver : ${svc ? svc.name : ''} — ${longDate(b.day.iso)}${b.slot ? ` à ${b.slot.time}` : ''}.`,
   );

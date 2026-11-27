@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import chair from '../../assets/photos/chair-800.webp';
-import { priceLabel, services } from '../../content/services';
+import { useServices } from '../../content/liveServices';
+import { priceLabel } from '../../content/services';
 
 const STEPS = ['Service', 'Barbier', 'Date', 'Heure', 'Détails', 'Confirmation'];
 
@@ -9,6 +10,7 @@ const STEPS = ['Service', 'Barbier', 'Date', 'Heure', 'Détails', 'Confirmation'
  * ficha oscura para empezar ya con el servicio elegido.
  */
 export function BookBand({ onBook }: { onBook: (svc?: number) => void }) {
+  const { services } = useServices();
   return (
     <section className="band theme-dark" id="reserver" aria-labelledby="band-title">
       <div className="wrap band-grid">

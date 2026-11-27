@@ -65,8 +65,12 @@ function parseServiceMap(raw) {
   return map;
 }
 
+// La web manda el id de Connek tal cual (servicios en vivo); las claves viejas
+// del flyer siguen pasando por CONNEK_SERVICES / CONNEK_SERVICE_ID.
 function serviceIdFor(key) {
-  return SERVICE_MAP[key] || DEFAULT_SERVICE_ID;
+  const k = String(key || "").trim();
+  if (/^\d+$/.test(k)) return Number(k);
+  return SERVICE_MAP[k] || DEFAULT_SERVICE_ID;
 }
 
 // ── Firma y llamada a Connek ──────────────────────────────────────────────
@@ -195,13 +199,49 @@ async function cached(key, ttlMs, load) {
   return value;
 }
 
+// Servicios del negocio en Connek (lo que el dueño cambia en la app se ve en ~1 min).
+const LIVE_TTL = 60000;
+function rawServices() {
+  return cached("services", LIVE_TTL, async () => {
+    const r = await connek("GET", "/v1/services");
+    if (!r.ok) throw new Error(`services ${r.status}`);
+    return Array.isArray(r.json) ? r.json : (r.json && r.json.data) || [];
+  });
+}
+
+function firstImage(s) {
+  let imgs = s.images;
+  if (typeof imgs === "string") { try { imgs = JSON.parse(imgs); } catch { imgs = []; } }
+  const fromList = Array.isArray(imgs) ? imgs.map((x) => (typeof x === "string" ? x : x && (x.url || x.src))).find(Boolean) : null;
+  return s.profile_image || s.avatar_image || fromList || null;
+}
+
+// Forma pública (sin notas internas): lo que la web necesita para la carta y la reserva.
+function publicService(s) {
+  const cents = s.price_cents != null ? s.price_cents : s.price_low_cents;
+  const high = s.price_high_cents;
+  return {
+    id: Number(s.id),
+    name: String(s.name || "").trim(),
+    price: cents != null ? Math.round(Number(cents)) / 100 : null,
+    plus: high != null && cents != null && Number(high) > Number(cents),
+    minutes: Number(s.duration_minutes) > 0 ? Number(s.duration_minutes) : BOOKING_MINUTES,
+    category: String(s.service_category || "").trim() || null,
+    description: s.description ? String(s.description).trim() : null,
+    image: firstImage(s),
+  };
+}
+
+async function liveServices() {
+  const all = await rawServices();
+  return all
+    .filter((s) => s && s.name && s.active !== false && s.show_on_website !== false && s.moderation_status !== "rejected")
+    .map(publicService);
+}
+
 async function serviceMinutes(serviceId) {
   try {
-    const servicios = await cached("services", 10 * 60000, async () => {
-      const r = await connek("GET", "/v1/services");
-      if (!r.ok) throw new Error(`services ${r.status}`);
-      return Array.isArray(r.json) ? r.json : (r.json && r.json.data) || [];
-    });
+    const servicios = await rawServices();
     const s = servicios.find((x) => Number(x.id) === Number(serviceId));
     if (s && Number(s.duration_minutes) > 0) return Number(s.duration_minutes);
   } catch {}
@@ -326,14 +366,30 @@ function send(res, status, body) {
 }
 
 const handlers = {
+  async services(_query, res) {
+    if (!configured()) return send(res, 503, { error: "not_configured" });
+    try {
+      send(res, 200, { data: await liveServices() });
+    } catch {
+      send(res, 502, { error: "services_unavailable" });
+    }
+  },
+
+  // Sin ?service = todo el equipo. Con servicio: quien lo hace; si en Connek nadie
+  // tiene servicios asignados todavía, el equipo entero (no se queda vacío).
   async team(query, res) {
     if (!configured()) return send(res, 200, { data: [] });
-    const serviceId = serviceIdFor(query.get("service") || "");
+    const svc = query.get("service") || "";
+    const serviceId = svc ? serviceIdFor(svc) : null;
     try {
-      const data = await cached(`team:${serviceId}`, 5 * 60000, async () => {
-        const r = await connek("GET", "/v1/staff", { query: { service_id: serviceId } });
-        if (!r.ok) throw new Error(`staff ${r.status}`);
-        return ((r.json && r.json.data) || []).map((s) => ({ id: s.id, name: s.name, image: s.image || null }));
+      const data = await cached(`team:${serviceId || "all"}`, LIVE_TTL, async () => {
+        const pedir = async (q) => {
+          const r = await connek("GET", "/v1/staff", { query: q });
+          if (!r.ok) throw new Error(`staff ${r.status}`);
+          return ((r.json && r.json.data) || []).map((s) => ({ id: s.id, name: s.name, image: s.image || null }));
+        };
+        const lista = serviceId ? await pedir({ service_id: serviceId }) : [];
+        return lista.length ? lista : pedir({});
       });
       send(res, 200, { data });
     } catch {
@@ -466,6 +522,7 @@ const server = http.createServer((req, res) => {
   res.setHeader("Content-Type", "application/json");
   const url = new URL(req.url || "/", "http://localhost");
   const route = `${req.method} ${url.pathname}`;
+  if (route === "GET /api/connek/services") return handlers.services(url.searchParams, res);
   if (route === "GET /api/connek/team") return handlers.team(url.searchParams, res);
   if (route === "GET /api/connek/availability") return handlers.availability(url.searchParams, res);
   if (route === "POST /api/connek/booking") return handlers.booking(req, res);
